@@ -1,0 +1,26 @@
+.author {
+  background: linear-gradient(127deg, var(--navy) 0 24%, var(--red) 24% 52%, var(--navy) 52%);
+  color: var(--paper);
+  padding: 60px var(--gutter);
+}
+.portrait {
+  aspect-ratio: 4 / 5;
+  max-height: 470px;
+  width: 100%;
+  background: var(--paper);
+  color: var(--navy);
+  display: grid;
+  place-items: center;
+  font-weight: 600;
+  font-size: 15px;
+  margin: 20px 0 24px;
+}
+.author h3 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+@media (max-width: 900px) {
+  .author {
+    padding: 48px var(--gutter);
+  }
+}

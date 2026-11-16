@@ -1,0 +1,45 @@
+.about {
+  padding: 64px var(--gutter);
+}
+.summary {
+  font-size: 19px;
+  margin-top: 16px;
+}
+.topics {
+  list-style: none;
+  counter-reset: n;
+  margin: 24px 0;
+  border-top: 3px solid var(--ink);
+}
+.topics li {
+  counter-increment: n;
+  font: 600 26px var(--font-display);
+  text-transform: uppercase;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--ink);
+  display: flex;
+  gap: 20px;
+}
+.topics li::before {
+  content: counter(n);
+  color: var(--red);
+  width: 22px;
+}
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 56px;
+}
+.facts dt {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--red);
+}
+.facts dd {
+  font: 600 24px var(--font-display);
+}
+@media (max-width: 900px) {
+  .about {
+    padding: 48px var(--gutter);
+  }
+}
