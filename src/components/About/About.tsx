@@ -9,7 +9,6 @@ export function About() {
     <section className={styles.about} id="book" aria-labelledby="book-title">
       <div className={styles.grid}>
         <div className={styles.text}>
-          <p className="eyebrow">01</p>
           <h2 id="book-title">Номын тухай</h2>
           <p className={styles.lede}>{first}</p>
           {rest.map((p) => (

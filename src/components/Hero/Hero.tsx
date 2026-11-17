@@ -22,7 +22,8 @@ export function Hero() {
         </h1>
         <p className={styles.sub}>{site.tagline}</p>
         <p className={styles.by}>
-          {site.author} · {site.year} · <span lang="en">{site.inspiredBy}</span>
+          <b>{site.author}</b>, {site.year}
+          <span lang="en">{site.inspiredBy}</span>
         </p>
         <div className={styles.cta}>
           <a className="btn" href="#order">
@@ -30,7 +31,7 @@ export function Hero() {
           </a>
           <Price className={styles.price} />
           <a className={styles.ghost} href="#book">
-            Номын тухай →
+            Номын тухай
           </a>
         </div>
       </div>

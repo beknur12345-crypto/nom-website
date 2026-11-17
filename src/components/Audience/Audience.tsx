@@ -6,7 +6,6 @@ export function Audience() {
   return (
     <section className={styles.audience} id="audience" aria-labelledby="audience-title">
       <div className={styles.main}>
-        <p className="eyebrow">02</p>
         <h2 id="audience-title">Хэнд зориулсан бэ?</h2>
         {a.paragraphs.map((p) => (
           <p key={p.slice(0, 24)}>{p}</p>

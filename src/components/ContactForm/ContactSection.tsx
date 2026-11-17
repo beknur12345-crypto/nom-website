@@ -17,7 +17,6 @@ export function ContactSection() {
 
   return (
     <section className={styles.contact} id="contact" aria-labelledby="contact-title">
-      <p className="eyebrow eyebrow--light">05</p>
       <h2 id="contact-title">Санал, захидал</h2>
       {site.email && (
         <a className={styles.mail} href={`mailto:${site.email}`}>

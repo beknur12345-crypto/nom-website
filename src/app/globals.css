@@ -136,7 +136,7 @@ a {
 .field__label {
   display: block;
   font-weight: 700;
-  font-size: 13px;
+  font-size: 15px;
   margin-bottom: 6px;
 }
 .input {
@@ -177,10 +177,11 @@ a {
 
 @media (max-width: 900px) {
   :root {
-    --nav-h: 72px;
+    --nav-h: 60px;
   }
   body {
-    padding-bottom: 58px;
+    /* Room for the fixed order bar, including the iPhone home-indicator area. */
+    padding-bottom: calc(58px + env(safe-area-inset-bottom));
   }
 }
 @media (max-width: 420px) {

@@ -14,7 +14,7 @@ export function Author() {
         placeholder="blur"
       />
       <div className={styles.text}>
-        <p className="eyebrow eyebrow--light">03 · Зохиогчийн тухай</p>
+        <p className="eyebrow eyebrow--light">Зохиогчийн тухай</p>
         <h2 id="author-title">{site.author}</h2>
         {site.authorBio.map((p, i) => (
           <p key={p.slice(0, 24)} className={i === 0 ? styles.lede : undefined}>

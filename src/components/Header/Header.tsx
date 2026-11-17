@@ -26,7 +26,7 @@ export function Header({ links }: { links: readonly NavLink[] }) {
         aria-controls="primary-nav"
         onClick={() => setOpen((o) => !o)}
       >
-        Цэс
+        {open ? 'Хаах' : 'Цэс'}
       </button>
       <nav
         id="primary-nav"
@@ -39,7 +39,11 @@ export function Header({ links }: { links: readonly NavLink[] }) {
             {l.label}
           </a>
         ))}
+        <a className={styles.navOrder} href="#order">
+          Ном захиалах
+        </a>
       </nav>
+      {open && <div className={styles.backdrop} aria-hidden="true" onClick={() => setOpen(false)} />}
       <a className={`btn btn--sm ${styles.cta}`} href="#order">
         Захиалах
       </a>
