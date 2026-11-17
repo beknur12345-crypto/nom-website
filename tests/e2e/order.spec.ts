@@ -5,16 +5,16 @@ test.describe('home page', () => {
     await page.goto('/');
     await expect(page).toHaveTitle(/Улс төрийн тулаан/);
     await expect(page.getByRole('heading', { level: 1 })).toContainText('тулаан');
-    for (const id of ['book', 'quotes', 'cases', 'reviews', 'author', 'order', 'contact']) {
+    for (const id of ['book', 'audience', 'author', 'order']) {
       await expect(page.locator(`#${id}`)).toHaveCount(1);
     }
-  });
-
-  test('reveals a redacted word in a quote', async ({ page }) => {
-    await page.goto('/');
-    const word = page.getByRole('button', { name: 'Нуугдсан үгийг нээх' }).first();
-    await word.click();
-    await expect(page.locator('#quotes').getByText('онцлох', { exact: true })).toBeVisible();
+    // Every in-page link must point at a section that exists.
+    const hrefs = await page
+      .locator('a[href^="#"]')
+      .evaluateAll((as) => as.map((a) => a.getAttribute('href')!).filter((h) => h.length > 1));
+    for (const href of new Set(hrefs)) {
+      await expect(page.locator(href), `anchor ${href}`).toHaveCount(1);
+    }
   });
 });
 
@@ -43,7 +43,8 @@ test.describe('order form', () => {
     await form.getByLabel('Дүүрэг / сум').fill('Дархан сум');
     await form.getByLabel('Дэлгэрэнгүй хаяг').fill('5-р баг, 12 тоот');
     await form.getByText('Дансаар').click();
-    await expect(form.getByText('Гүйлгээний утга')).toBeVisible();
+    // Until a real price and QR are set, payment details are not shown.
+    await expect(form.getByText('Төлбөр хийх хэлбэрээ сонгоно уу')).toBeVisible();
     await form.getByRole('button', { name: 'Захиалга илгээх' }).click();
 
     const status = page.getByRole('status').filter({ hasText: 'Туршилтын горим' });
@@ -53,14 +54,8 @@ test.describe('order form', () => {
   });
 });
 
-test('contact form validates and submits in test mode', async ({ page }) => {
-  await page.goto('/#contact');
-  const form = page.getByRole('form', { name: 'Санал, захидал' });
-  await form.getByRole('button', { name: 'Илгээх' }).click();
-  await expect(form.getByText('И-мэйл хаягаа зөв бичнэ үү')).toBeVisible();
-  await form.getByLabel('Таны нэр').fill('Бат');
-  await form.getByLabel('И-мэйл хаяг').fill('bat@mail.mn');
-  await form.getByLabel('Зурвас').fill('Сайн байна уу');
-  await form.getByRole('button', { name: 'Илгээх' }).click();
-  await expect(page.getByText('Туршилтын горим: зурвас илгээгдээгүй')).toBeVisible();
+test('contact form is hidden while email is not configured', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('#contact')).toHaveCount(0);
+  await expect(page.locator('a[href="#contact"]')).toHaveCount(0);
 });
