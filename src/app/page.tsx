@@ -1,4 +1,5 @@
 import { About } from '@/components/About/About';
+import { Audience } from '@/components/Audience/Audience';
 import { AnnouncementBar } from '@/components/AnnouncementBar/AnnouncementBar';
 import { Author } from '@/components/Author/Author';
 import { Cases } from '@/components/Cases/Cases';
@@ -32,6 +33,7 @@ export default function Home() {
           <About />
           <Quotes quotes={site.quotes} />
         </section>
+        <Audience />
         <Cases cases={site.cases} />
         <section className={styles.people} aria-label="Сэтгэгдэл ба зохиогч">
           <Reviews reviews={site.reviews} />

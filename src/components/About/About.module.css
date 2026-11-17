@@ -1,9 +1,44 @@
 .about {
   padding: 64px var(--gutter);
 }
-.summary {
-  font-size: 19px;
+.lede {
+  font-size: 20px;
+  font-weight: 600;
   margin-top: 16px;
+}
+.body {
+  margin-top: 18px;
+}
+.body::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.body p + p {
+  margin-top: 14px;
+}
+.figure {
+  float: right;
+  width: 240px;
+  margin: 4px 0 16px 28px;
+}
+.figure img {
+  width: 100%;
+  border: 3px solid var(--ink);
+}
+.figure figcaption {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+  margin-top: 8px;
+}
+.thesis {
+  font: 700 clamp(26px, 2.6vw, 34px) / 1.15 var(--font-display);
+  text-transform: uppercase;
+  color: var(--red);
+  border-left: 6px solid var(--red);
+  padding-left: 18px;
+  margin: 32px 0 8px;
 }
 .topics {
   list-style: none;
@@ -37,6 +72,14 @@
 }
 .facts dd {
   font: 600 24px var(--font-display);
+}
+@media (max-width: 560px) {
+  .figure {
+    float: none;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 0 20px;
+  }
 }
 @media (max-width: 900px) {
   .about {

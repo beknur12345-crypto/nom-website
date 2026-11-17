@@ -8,7 +8,7 @@ export function Cases({ cases }: { cases: readonly CaseStudy[] }) {
     <section className={styles.cases} id="cases" aria-labelledby="cases-title">
       <div className={styles.head}>
         <div>
-          <p className="eyebrow eyebrow--light">03</p>
+          <p className="eyebrow eyebrow--light">04</p>
           <h2 id="cases-title">Кейс судалгаа</h2>
         </div>
         <p>Кейс бүрийг нөхцөл байдал, стратеги, үр дүн гэсэн гурван хэсгээр товч харуулна.</p>
