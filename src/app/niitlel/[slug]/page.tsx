@@ -4,14 +4,11 @@ import { notFound } from 'next/navigation';
 import styles from '@/components/Articles/ArticlePage.module.css';
 import { Footer } from '@/components/Footer/Footer';
 import { Header } from '@/components/Header/Header';
-import { MobileOrderBar } from '@/components/MobileOrderBar/MobileOrderBar';
 import { Share } from '@/components/Share/Share';
 import { site } from '@/content/site';
 import { formatDay, parseBody, safeUrl, summary } from '@/lib/article-text';
 import { getPublishedArticle } from '@/lib/articles';
-import { formatMNT } from '@/lib/money';
 import { navLinks } from '@/lib/nav';
-import { isPriceSet } from '@/lib/pricing';
 
 export const revalidate = 60;
 
@@ -41,7 +38,7 @@ export default async function ArticlePage({ params }: PageProps<'/niitlel/[slug]
 
   return (
     <>
-      <Header links={navLinks({ hasArticles: true, home: false })} home={false} />
+      <Header links={navLinks({ hasArticles: true, home: false })} home={false} orderCta={false} />
       <main id="main" className={styles.page}>
         <article className={styles.article}>
           <Link className={styles.back} href="/niitlel">
@@ -78,17 +75,8 @@ export default async function ArticlePage({ params }: PageProps<'/niitlel/[slug]
 
           <Share label="Нийтлэлийг share хийх" />
         </article>
-
-        <aside className={styles.book} aria-label="Ном">
-          <p>“{site.title}”</p>
-          <p className={styles.bookSub}>{site.tagline}</p>
-          <Link className="btn" href="/#order">
-            Ном захиалах
-          </Link>
-        </aside>
       </main>
-      <Footer />
-      <MobileOrderBar href="/#order" price={isPriceSet() ? formatMNT(site.pricing.unitPrice) : null} />
+      <Footer share={false} />
     </>
   );
 }

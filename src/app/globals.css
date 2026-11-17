@@ -182,7 +182,7 @@ a {
   :root {
     --nav-h: 60px;
   }
-  body {
+  body:has([data-order-bar]) {
     /* Room for the fixed order bar, including the iPhone home-indicator area. */
     padding-bottom: calc(58px + env(safe-area-inset-bottom));
   }

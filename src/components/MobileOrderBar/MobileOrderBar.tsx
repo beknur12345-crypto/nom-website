@@ -16,7 +16,7 @@ export function MobileOrderBar({ price, href = '#order' }: { price: string | nul
   }, []);
 
   return (
-    <a className={`${styles.bar} ${hidden ? styles.off : ''}`} href={href}>
+    <a className={`${styles.bar} ${hidden ? styles.off : ''}`} href={href} data-order-bar>
       <span>Ном захиалах</span>
       {price && <span>{price}</span>}
     </a>

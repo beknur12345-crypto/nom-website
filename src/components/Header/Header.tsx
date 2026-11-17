@@ -4,8 +4,19 @@ import { useEffect, useState } from 'react';
 import { type NavLink, site } from '@/content/site';
 import styles from './Header.module.css';
 
-/** `home`: on the home page links are in-page anchors; elsewhere they point back to "/#…". */
-export function Header({ links, home = true }: { links: readonly NavLink[]; home?: boolean }) {
+/**
+ * `home`: on the home page links are in-page anchors; elsewhere they point back to "/#…".
+ * `orderCta`: the "Захиалах" buttons; off on reading pages (articles).
+ */
+export function Header({
+  links,
+  home = true,
+  orderCta = true,
+}: {
+  links: readonly NavLink[];
+  home?: boolean;
+  orderCta?: boolean;
+}) {
   const prefix = home ? '' : '/';
   const [open, setOpen] = useState(false);
 
@@ -67,14 +78,18 @@ export function Header({ links, home = true }: { links: readonly NavLink[]; home
             {l.label}
           </a>
         ))}
-        <a className={styles.navOrder} href={`${prefix}#order`}>
-          Ном захиалах
-        </a>
+        {orderCta && (
+          <a className={styles.navOrder} href={`${prefix}#order`}>
+            Ном захиалах
+          </a>
+        )}
       </nav>
       {open && <div className={styles.backdrop} aria-hidden="true" onClick={() => setOpen(false)} />}
-      <a className={`btn btn--sm ${styles.cta}`} href={`${prefix}#order`}>
-        Захиалах
-      </a>
+      {orderCta && (
+        <a className={`btn btn--sm ${styles.cta}`} href={`${prefix}#order`}>
+          Захиалах
+        </a>
+      )}
     </header>
   );
 }

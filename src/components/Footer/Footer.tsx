@@ -2,14 +2,15 @@ import { Share } from '@/components/Share/Share';
 import { site } from '@/content/site';
 import styles from './Footer.module.css';
 
-export function Footer() {
+/** `share`: off on article pages, which have their own share prompt. */
+export function Footer({ share = true }: { share?: boolean } = {}) {
   return (
     <footer className={styles.footer}>
       <span>
         © {site.year} {site.author}
       </span>
       {site.email && <a href={`mailto:${site.email}`}>{site.email}</a>}
-      <Share tone="light" />
+      {share && <Share tone="light" />}
     </footer>
   );
 }

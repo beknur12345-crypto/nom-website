@@ -3,12 +3,9 @@ import { ArticleCard } from '@/components/Articles/ArticleCard';
 import styles from '@/components/Articles/Articles.module.css';
 import { Footer } from '@/components/Footer/Footer';
 import { Header } from '@/components/Header/Header';
-import { MobileOrderBar } from '@/components/MobileOrderBar/MobileOrderBar';
 import { site } from '@/content/site';
 import { getPublishedArticles } from '@/lib/articles';
-import { formatMNT } from '@/lib/money';
 import { navLinks } from '@/lib/nav';
-import { isPriceSet } from '@/lib/pricing';
 
 export const revalidate = 60;
 
@@ -22,7 +19,7 @@ export default async function ArticlesPage() {
   const list = await getPublishedArticles();
   return (
     <>
-      <Header links={navLinks({ hasArticles: list.length > 0, home: false })} home={false} />
+      <Header links={navLinks({ hasArticles: list.length > 0, home: false })} home={false} orderCta={false} />
       <main id="main" className={styles.page}>
         <h1>Нийтлэл</h1>
         {list.length === 0 ? (
@@ -37,8 +34,7 @@ export default async function ArticlesPage() {
           </div>
         )}
       </main>
-      <Footer />
-      <MobileOrderBar href="/#order" price={isPriceSet() ? formatMNT(site.pricing.unitPrice) : null} />
+      <Footer share={false} />
     </>
   );
 }

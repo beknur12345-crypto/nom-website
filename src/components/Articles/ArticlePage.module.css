@@ -1,11 +1,13 @@
 .page {
   background: var(--paper);
   padding: 40px var(--pad-x) 0;
+  /* Short articles still fill the screen, so the footer sits at the bottom. */
+  min-height: calc(100dvh - var(--nav-h) - 64px);
 }
 .article {
   max-width: 720px;
   margin: 0 auto;
-  padding-bottom: 56px;
+  padding-bottom: 72px;
   display: grid;
   gap: 18px;
 }
@@ -58,35 +60,11 @@
   color: var(--navy);
 }
 
-/* Book prompt under every article */
-.book {
-  margin: 0 calc(var(--pad-x) * -1);
-  padding: 48px var(--pad-x);
-  background: var(--red);
-  color: var(--paper);
-  display: grid;
-  gap: 10px;
-  justify-items: start;
-}
-.book p:first-child {
-  font: 700 clamp(30px, 4vw, 48px) / 1.05 var(--font-display);
-  text-transform: uppercase;
-}
-.bookSub {
-  max-width: 560px;
-  font-weight: 600;
-  margin-bottom: 12px;
-}
-
 @media (max-width: 900px) {
   .page {
     padding: 24px var(--gutter) 0;
   }
   .body {
     font-size: 17px;
-  }
-  .book {
-    margin: 0 calc(var(--gutter) * -1);
-    padding: 40px var(--gutter);
   }
 }
