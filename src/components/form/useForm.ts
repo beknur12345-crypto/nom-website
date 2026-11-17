@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState, useTransition } from 'react';
-import type { z } from 'zod';
+import type * as z from 'zod/mini';
 import { IDLE, type FormResult } from '@/lib/form-result';
 import { fieldErrors, formDataToObject, type FieldErrors } from '@/lib/schemas';
 
@@ -11,7 +11,7 @@ import { fieldErrors, formDataToObject, type FieldErrors } from '@/lib/schemas';
  * reset the fields when validation fails.
  */
 export function useForm(
-  schema: z.ZodType,
+  schema: z.ZodMiniType,
   fields: readonly string[],
   action: (formData: FormData) => Promise<FormResult>,
 ) {
