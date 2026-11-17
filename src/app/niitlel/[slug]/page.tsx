@@ -76,7 +76,7 @@ export default async function ArticlePage({ params }: PageProps<'/niitlel/[slug]
             </a>
           )}
 
-          <Share label="Нийтлэлийг хуваалцах" />
+          <Share label="Нийтлэлийг share хийх" />
         </article>
 
         <aside className={styles.book} aria-label="Ном">

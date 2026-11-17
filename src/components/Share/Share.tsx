@@ -29,7 +29,7 @@ export function Share({ tone = 'dark', label = 'Share хийх' }: { tone?: 'dar
             type="button"
             onClick={() => navigator.share({ title: site.title, text: shareText, url }).catch(() => {})}
           >
-            Хуваалцах
+            Share
           </button>
         )}
         <a href={fb} target="_blank" rel="noopener noreferrer">
