@@ -71,6 +71,13 @@
 }
 
 /* Full list page */
+.back {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 10px 0;
+  margin-bottom: 12px;
+}
 .page {
   background: var(--paper);
   padding: 56px var(--pad-x) 88px;

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { ArticleCard } from '@/components/Articles/ArticleCard';
 import styles from '@/components/Articles/Articles.module.css';
 import { Footer } from '@/components/Footer/Footer';
@@ -21,6 +22,9 @@ export default async function ArticlesPage() {
     <>
       <Header links={navLinks({ hasArticles: list.length > 0, home: false })} home={false} orderCta={false} />
       <main id="main" className={styles.page}>
+        <Link className={styles.back} href="/">
+          ← Буцах
+        </Link>
         <h1>Нийтлэл</h1>
         {list.length === 0 ? (
           <p className={styles.excerpt} style={{ marginTop: 24 }}>
