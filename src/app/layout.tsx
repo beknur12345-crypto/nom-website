@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Manrope, Oswald } from 'next/font/google';
+import { SiteAnalytics } from '@/components/SiteAnalytics';
 import { site } from '@/content/site';
 import './globals.css';
 
@@ -41,7 +42,10 @@ export const viewport: Viewport = { themeColor: '#8C3328', viewportFit: 'cover' 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="mn" className={`${oswald.variable} ${manrope.variable}`}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <SiteAnalytics />
+      </body>
     </html>
   );
 }

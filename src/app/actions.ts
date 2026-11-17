@@ -3,11 +3,14 @@
 import { headers } from 'next/headers';
 import { getDb } from '@/db';
 import { orders } from '@/db/schema';
-import { contactEmail, orderEmail } from '@/emails/templates';
+import { contactEmail, orderEmail, orderTelegram } from '@/emails/templates';
 import { isEmailConfigured, notifyOwner } from '@/lib/email';
 import type { FormResult } from '@/lib/form-result';
 import { calculateTotals } from '@/lib/pricing';
 import { createRateLimiter } from '@/lib/rate-limit';
+import { getStock, releaseStock, reserveStock } from '@/lib/stock';
+import { sendTelegram } from '@/lib/telegram';
+import { revalidatePath } from 'next/cache';
 import {
   CONTACT_FIELDS,
   HONEYPOT_FIELD,
@@ -29,6 +32,8 @@ async function clientIp(): Promise<string> {
 
 const isBot = (formData: FormData) => Boolean(formData.get(HONEYPOT_FIELD));
 
+const getStockSafe = async () => `${(await getStock()) ?? '?'} ширхэг`;
+
 export async function submitOrder(formData: FormData): Promise<FormResult> {
   // Bots get a fake success so they don't retry.
   if (isBot(formData)) return { status: 'success', mode: 'test' };
@@ -47,7 +52,10 @@ export async function submitOrder(formData: FormData): Promise<FormResult> {
     return { status: 'success', mode: 'test' };
   }
 
-  let reference: string;
+  const reservation = await reserveStock(totals.quantity);
+  if (!reservation.ok) return { status: 'error', reason: 'out-of-stock', left: reservation.left };
+
+  let id: number;
   try {
     const [row] = await db
       .insert(orders)
@@ -65,14 +73,26 @@ export async function submitOrder(formData: FormData): Promise<FormResult> {
       })
       .returning({ id: orders.id });
     if (!row) throw new Error('Insert returned no row');
-    reference = `№${row.id}`;
+    id = row.id;
   } catch (err) {
     console.error('[order] database insert failed:', err);
+    if (reservation.tracked) await releaseStock(totals.quantity);
     return { status: 'error', reason: 'server' };
   }
+  // Refresh the "books left" shown on the home page and the dashboard.
+  revalidatePath('/');
+  revalidatePath('/admin');
 
   // The order is saved; a failed notification must not fail the customer's order.
-  await notifyOwner(orderEmail(order, totals, reference));
+  const reference = `№${id}`;
+  const left = reservation.tracked ? `\n📦 Үлдэгдэл: ${await getStockSafe()}` : '';
+  await Promise.all([
+    notifyOwner(orderEmail(order, totals, reference)),
+    sendTelegram(orderTelegram(order, totals, reference) + left, {
+      text: 'Самбар дээр нээх',
+      url: `${site.url}/admin?q=${id}`,
+    }),
+  ]);
   return { status: 'success', mode: 'live', reference };
 }
 

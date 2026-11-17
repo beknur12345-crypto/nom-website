@@ -224,3 +224,33 @@
     padding: 48px var(--gutter);
   }
 }
+
+/* The book cover tilts up into place as the order section arrives. */
+@keyframes coverIn {
+  from {
+    opacity: 0;
+    translate: 0 80px;
+    rotate: -6deg;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .cover {
+      animation: coverIn linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 25%;
+    }
+  }
+}
+
+.stockNote {
+  margin-top: 8px;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--danger);
+}
+
+/* Share prompt under the order confirmation. */
+.done > div {
+  margin-top: 28px;
+}

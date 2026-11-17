@@ -3,7 +3,7 @@ import cover from '@/assets/book.webp';
 import { OrderForm } from './OrderForm';
 import styles from './OrderForm.module.css';
 
-export function OrderSection() {
+export function OrderSection({ stock }: { stock: number | null }) {
   return (
     <section className={styles.order} id="order" aria-labelledby="order-title">
       <div className={styles.intro}>
@@ -13,7 +13,7 @@ export function OrderSection() {
         </h2>
         <Image className={styles.cover} src={cover} alt="" sizes="372px" />
       </div>
-      <OrderForm />
+      <OrderForm stock={stock} />
     </section>
   );
 }

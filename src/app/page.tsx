@@ -12,8 +12,13 @@ import { NAV_LINKS, site } from '@/content/site';
 import { isEmailConfigured } from '@/lib/email';
 import { formatMNT } from '@/lib/money';
 import { isPriceSet } from '@/lib/pricing';
+import { getStock } from '@/lib/stock';
 
-export default function Home() {
+// Re-check the stock at most once a minute (orders refresh it immediately).
+export const revalidate = 60;
+
+export default async function Home() {
+  const stock = await getStock();
   // Without email delivery, contact messages would be silently dropped, so hide the form.
   const contactEnabled = isEmailConfigured();
   const links = contactEnabled ? NAV_LINKS : NAV_LINKS.filter((l) => l.href !== '#contact');
@@ -29,7 +34,7 @@ export default function Home() {
         <About />
         <Audience />
         <Author />
-        <OrderSection />
+        <OrderSection stock={stock} />
         {contactEnabled && <ContactSection />}
       </main>
       <Footer />

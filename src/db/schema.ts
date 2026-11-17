@@ -1,8 +1,10 @@
-import { integer, pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+import { check, integer, pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+import { sql } from 'drizzle-orm';
+import { ORDER_STATUSES } from '@/lib/labels';
 import { PAY_METHODS } from '@/lib/schemas';
 
 export const payMethod = pgEnum('pay_method', PAY_METHODS);
-export const orderStatus = pgEnum('order_status', ['new', 'paid', 'shipped', 'delivered', 'cancelled']);
+export const orderStatus = pgEnum('order_status', ORDER_STATUSES);
 
 export const orders = pgTable('orders', {
   id: integer('id').primaryKey().generatedAlwaysAsIdentity({ startWith: 1001 }),
@@ -23,3 +25,17 @@ export const orders = pgTable('orders', {
 
 export type Order = typeof orders.$inferSelect;
 export type NewOrder = typeof orders.$inferInsert;
+
+/** Single-row table holding how many books are left. */
+export const inventory = pgTable(
+  'inventory',
+  {
+    id: integer('id').primaryKey().default(1),
+    stock: integer('stock').notNull(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    check('inventory_single_row', sql`${t.id} = 1`),
+    check('inventory_stock_nonnegative', sql`${t.stock} >= 0`),
+  ],
+);

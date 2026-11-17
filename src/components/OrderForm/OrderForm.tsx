@@ -4,24 +4,26 @@ import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { submitOrder } from '@/app/actions';
 import { site } from '@/content/site';
+import { PAY_LABELS } from '@/lib/labels';
 import { formatMNT } from '@/lib/money';
 import { MAX_QTY, MIN_QTY, calculateTotals, isPriceSet } from '@/lib/pricing';
 import { PROVINCES } from '@/lib/provinces';
 import { ORDER_FIELDS, PAY_METHODS, orderSchema, type PayMethod } from '@/lib/schemas';
 import { Field } from '@/components/form/Field';
 import { Honeypot } from '@/components/form/Honeypot';
+import { Share } from '@/components/Share/Share';
 import { useForm } from '@/components/form/useForm';
 import styles from './OrderForm.module.css';
 
-const PAY_LABELS: Record<PayMethod, string> = { qr: 'QR код', bank: 'Дансаар', card: 'Картаар' };
-
-export function OrderForm() {
+/** `stock`: books left, or null when stock isn't tracked. */
+export function OrderForm({ stock }: { stock: number | null }) {
   const { formRef, result, errors, pending, onSubmit, clearError, reset } = useForm(
     orderSchema,
     ORDER_FIELDS,
     submitOrder,
   );
   const [qty, setQty] = useState(MIN_QTY);
+  const maxQty = stock === null ? MAX_QTY : Math.max(MIN_QTY, Math.min(MAX_QTY, stock));
   const [pay, setPay] = useState<PayMethod>('qr');
   const doneRef = useRef<HTMLDivElement>(null);
 
@@ -41,6 +43,15 @@ export function OrderForm() {
     setPay('qr');
   };
 
+  if (stock === 0 && !done) {
+    return (
+      <div className={styles.done} role="status">
+        <h3>Ном дууссан</h3>
+        <p>Одоогоор бүх ном зарагдсан байна. Дараагийн хэвлэлт гармагц энд захиалга авч эхэлнэ.</p>
+      </div>
+    );
+  }
+
   if (done) {
     const live = result.mode === 'live';
     return (
@@ -54,6 +65,7 @@ export function OrderForm() {
         <button className="btn" type="button" onClick={startOver}>
           Шинэ захиалга
         </button>
+        {live && <Share label="Энэ номыг найзууддаа санал болгох" />}
       </div>
     );
   }
@@ -82,13 +94,14 @@ export function OrderForm() {
             <button
               type="button"
               aria-label="Нэгээр нэмэх"
-              disabled={qty >= MAX_QTY}
+              disabled={qty >= maxQty}
               onClick={() => setQty((q) => q + 1)}
             >
               +
             </button>
           </div>
           <input type="hidden" name="quantity" value={qty} />
+          {stock !== null && stock <= 20 && <p className={styles.stockNote}>Зөвхөн {stock} ширхэг үлдсэн</p>}
         </div>
         <Field
           name="name"
@@ -226,9 +239,13 @@ export function OrderForm() {
 
         {result.status === 'error' && (
           <p className={styles.error} role="alert">
-            {result.reason === 'rate-limited'
-              ? 'Хэт олон оролдлого хийлээ. Хэдэн минутын дараа дахин оролдоно уу.'
-              : `Захиалга илгээгдсэнгүй. Дахин оролдоно уу${site.email ? `, эсвэл ${site.email} хаягаар холбогдоно уу` : ''}.`}
+            {result.reason === 'out-of-stock'
+              ? result.left > 0
+                ? `Үлдэгдэл хүрэлцэхгүй байна: одоо ${result.left} ширхэг үлдсэн. Тоо ширхэгээ багасгана уу.`
+                : 'Уучлаарай, ном дууссан байна.'
+              : result.reason === 'rate-limited'
+                ? 'Хэт олон оролдлого хийлээ. Хэдэн минутын дараа дахин оролдоно уу.'
+                : `Захиалга илгээгдсэнгүй. Дахин оролдоно уу${site.email ? `, эсвэл ${site.email} хаягаар холбогдоно уу` : ''}.`}
           </p>
         )}
         <button className="btn btn--wide" type="submit" disabled={pending}>

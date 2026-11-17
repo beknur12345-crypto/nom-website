@@ -8,6 +8,13 @@
       "when": 1794858055058,
       "tag": "0000_lame_clea",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794951696487,
+      "tag": "0001_inventory",
+      "breakpoints": true
     }
   ]
 }

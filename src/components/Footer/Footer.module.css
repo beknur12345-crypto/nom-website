@@ -7,4 +7,5 @@
   justify-content: space-between;
   padding: 20px var(--pad-x);
   font-size: 13px;
+  align-items: center;
 }

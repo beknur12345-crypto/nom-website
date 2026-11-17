@@ -1,0 +1,36 @@
+.share {
+  display: grid;
+  gap: 8px;
+}
+.label {
+  font-weight: 700;
+  font-size: 15px;
+}
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.buttons a,
+.buttons button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 16px;
+  font: 700 15px var(--font-body);
+  text-decoration: none;
+  cursor: pointer;
+  border: 2px solid currentColor;
+  background: transparent;
+  color: inherit;
+}
+.share[data-tone='dark'] .buttons a:hover,
+.share[data-tone='dark'] .buttons button:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+.share[data-tone='light'] .buttons a:hover,
+.share[data-tone='light'] .buttons button:hover {
+  background: var(--paper);
+  color: var(--ink);
+}
