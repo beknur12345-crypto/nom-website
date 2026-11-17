@@ -1,27 +1,39 @@
 .author {
-  background: linear-gradient(127deg, var(--navy) 0 24%, var(--red) 24% 52%, var(--navy) 52%);
+  background: linear-gradient(127deg, var(--navy) 0 30%, var(--red) 30% 48%, var(--navy) 48%);
   color: var(--paper);
-  padding: 60px var(--gutter);
+  display: grid;
+  grid-template-columns: minmax(0, 440px) minmax(0, 680px);
+  justify-content: center;
+  align-items: center;
+  gap: 40px 72px;
+  padding: 80px var(--gutter);
 }
 .portrait {
-  aspect-ratio: 4 / 5;
-  max-height: 520px;
   width: 100%;
-  max-width: 440px;
+  aspect-ratio: 4 / 5;
   object-fit: cover;
   object-position: 50% 15%;
   border: 4px solid var(--paper);
-  margin: 20px 0 24px;
 }
-.author p + p {
-  margin-top: 12px;
+.text h2 {
+  font-size: clamp(40px, 4.6vw, 64px);
+  margin-bottom: 20px;
 }
-.author h3 {
-  font-size: 36px;
-  margin-bottom: 10px;
+.text p + p {
+  margin-top: 14px;
+}
+.text .lede {
+  font-size: 20px;
+  font-weight: 600;
+  padding-bottom: 18px;
+  border-bottom: 2px solid var(--cream);
 }
 @media (max-width: 900px) {
   .author {
+    grid-template-columns: 1fr;
     padding: 48px var(--gutter);
+  }
+  .portrait {
+    max-width: 440px;
   }
 }

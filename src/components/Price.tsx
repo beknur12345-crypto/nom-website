@@ -4,9 +4,8 @@ import { isPriceSet } from '@/lib/pricing';
 
 export const PRICE_PLACEHOLDER = '₮00,000';
 
-/** Shows the book price, or a placeholder until the price is set in content/site.ts. */
+/** Shows the book price; renders nothing until the price is set in content/site.ts. */
 export function Price({ className }: { className?: string }) {
-  return (
-    <span className={className}>{isPriceSet() ? formatMNT(site.pricing.unitPrice) : PRICE_PLACEHOLDER}</span>
-  );
+  if (!isPriceSet()) return null;
+  return <span className={className}>{formatMNT(site.pricing.unitPrice)}</span>;
 }

@@ -7,7 +7,7 @@ export function OrderSection() {
   return (
     <section className={styles.order} id="order" aria-labelledby="order-title">
       <div className={styles.intro}>
-        <p className="eyebrow eyebrow--light">07</p>
+        <p className="eyebrow eyebrow--light">04</p>
         <h2 id="order-title">
           Ном
           <br />

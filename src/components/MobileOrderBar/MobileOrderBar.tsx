@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import styles from './MobileOrderBar.module.css';
 
 /** Sticky "order" bar on phones; hides while the order section is on screen. */
-export function MobileOrderBar({ price }: { price: string }) {
+export function MobileOrderBar({ price }: { price: string | null }) {
   const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export function MobileOrderBar({ price }: { price: string }) {
   return (
     <a className={`${styles.bar} ${hidden ? styles.off : ''}`} href="#order">
       <span>Ном захиалах</span>
-      <span>{price}</span>
+      {price && <span>{price}</span>}
     </a>
   );
 }

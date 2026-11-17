@@ -3,44 +3,12 @@
  * real details are ready; the types make sure nothing is left out.
  */
 
-export interface Quote {
-  /** Wrap words in [brackets] to show them as blacked-out words readers tap to reveal. */
-  text: string;
-  source: string;
-}
-
-export interface CaseStudy {
-  title: string;
-  situation: string;
-  strategy: string;
-  result: string;
-}
-
-export interface Review {
-  quote: string;
-  name: string;
-  role: string;
-}
-
 export interface BankDetails {
   bank: string;
   account: string;
   holder: string;
   reference: string;
 }
-
-const PLACEHOLDER_CASE: CaseStudy = {
-  title: 'Кейсийн гарчиг',
-  situation: 'Товч тайлбар энд байрлана.',
-  strategy: 'Товч тайлбар энд байрлана.',
-  result: 'Товч тайлбар энд байрлана.',
-};
-
-const PLACEHOLDER_REVIEW: Review = {
-  quote: 'Уншигчийн сэтгэгдлээс түүвэрлэсэн хэсэг энд байрлана. Нэг, хоёр өгүүлбэр хангалттай.',
-  name: 'Уншигчийн нэр',
-  role: 'Албан тушаал',
-};
 
 export const site = {
   title: 'Улс төрийн тулаан',
@@ -51,9 +19,6 @@ export const site = {
   description: 'Улс төр, сонгуулийн технологи, стратеги болон манлайллын иж бүрэн гарын авлага.',
   tagline: 'Улс төр, сонгуулийн технологи, стратеги болон манлайллын иж бүрэн гарын авлага',
   inspiredBy: 'Inspired by the book Vom Kriege',
-
-  /** Set to null to hide the announcement bar. */
-  announcement: 'Цаг үеийн зар, анхааруулга энд байрлана' as string | null,
 
   pricing: {
     unitPrice: 0, // e.g. 45000
@@ -70,28 +35,8 @@ export const site = {
     ],
     /** Closing line, shown large. */
     thesis: 'Улс төр, Сонгуулийн технологи, Стратегийн харилцаа нь орчин цагийн дайны хэлбэр юм.',
-    topics: ['Улс төр', 'Сонгуулийн технологи', 'Стратеги', 'Манлайлал'],
-    language: 'Монгол',
     pages: null as number | null,
   },
-
-  quotes: [
-    {
-      text: 'Номоос сонгосон [онцлох] эшлэл энд байрлана. Хоёр, гурван мөрөнд [багтах] богино, хурц [өгүүлбэр] хамгийн сайн уншигдана.',
-      source: 'Бүлэг 0, хуудас 000',
-    },
-    { text: 'Хоёр дахь [эшлэл] энд байрлана. Богино байх [тусам] сайн.', source: 'Бүлэг 0, хуудас 000' },
-    { text: 'Гурав дахь [эшлэл] энд байрлана. Богино байх [тусам] сайн.', source: 'Бүлэг 0, хуудас 000' },
-  ] satisfies Quote[],
-
-  cases: [PLACEHOLDER_CASE, PLACEHOLDER_CASE, PLACEHOLDER_CASE] satisfies CaseStudy[],
-
-  reviews: [
-    PLACEHOLDER_REVIEW,
-    PLACEHOLDER_REVIEW,
-    PLACEHOLDER_REVIEW,
-    PLACEHOLDER_REVIEW,
-  ] satisfies Review[],
 
   /** "Хэнд зориулсан бэ?" section. */
   audience: {
@@ -136,11 +81,8 @@ export const site = {
 } as const;
 
 export const NAV_LINKS = [
-  { href: '#book', label: 'Ном' },
-  { href: '#quotes', label: 'Эшлэл' },
+  { href: '#book', label: 'Номын тухай' },
   { href: '#audience', label: 'Хэнд зориулав' },
-  { href: '#cases', label: 'Кейс' },
-  { href: '#reviews', label: 'Сэтгэгдэл' },
   { href: '#author', label: 'Зохиогч' },
   { href: '#contact', label: 'Холбоо барих' },
 ] as const;

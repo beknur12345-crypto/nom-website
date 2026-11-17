@@ -1,7 +1,6 @@
 .audience {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 520px);
-  border-top: 3px solid var(--ink);
 }
 .main {
   padding: 64px var(--gutter);
