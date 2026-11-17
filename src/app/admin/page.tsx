@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { AutoRefresh, LoginForm, StockForm, TestNotification } from '@/components/Admin/ClientBits';
+import { AdminBar } from '@/components/Admin/AdminBar';
+import { LoginForm, StockForm, TestNotification } from '@/components/Admin/ClientBits';
 import { OrderCard } from '@/components/Admin/OrderCard';
 import styles from '@/components/Admin/Admin.module.css';
 import { site } from '@/content/site';
@@ -11,7 +12,6 @@ import { ORDER_STATUSES, STATUS_LABELS } from '@/lib/labels';
 import { formatMNT } from '@/lib/money';
 import { getStock } from '@/lib/stock';
 import { isTelegramConfigured } from '@/lib/telegram';
-import { logout } from './actions';
 
 export const metadata: Metadata = {
   title: 'Захиалгын самбар',
@@ -41,23 +41,7 @@ export default async function AdminPage({ searchParams }: PageProps<'/admin'>) {
 
   return (
     <div className={styles.admin}>
-      <header className={styles.bar}>
-        <div>
-          <p className={styles.brand}>{site.title}</p>
-          <h1>Захиалгууд</h1>
-        </div>
-        <div className={styles.barActions}>
-          <AutoRefresh />
-          <a className={styles.barLink} href="/admin/export" download>
-            Excel татах
-          </a>
-          <form action={logout}>
-            <button className={styles.barLink} type="submit">
-              Гарах
-            </button>
-          </form>
-        </div>
-      </header>
+      <AdminBar active="orders" title="Захиалгууд" refresh />
 
       <main className={styles.body}>
         {!stats ? (

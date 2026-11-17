@@ -1,4 +1,5 @@
 import { About } from '@/components/About/About';
+import { Articles } from '@/components/Articles/Articles';
 import { Audience } from '@/components/Audience/Audience';
 import { Author } from '@/components/Author/Author';
 import { ContactSection } from '@/components/ContactForm/ContactSection';
@@ -8,8 +9,10 @@ import { Hero } from '@/components/Hero/Hero';
 import { JsonLd } from '@/components/JsonLd';
 import { MobileOrderBar } from '@/components/MobileOrderBar/MobileOrderBar';
 import { OrderSection } from '@/components/OrderForm/OrderSection';
-import { NAV_LINKS, site } from '@/content/site';
+import { site } from '@/content/site';
+import { getPublishedArticles } from '@/lib/articles';
 import { isEmailConfigured } from '@/lib/email';
+import { navLinks } from '@/lib/nav';
 import { formatMNT } from '@/lib/money';
 import { isPriceSet } from '@/lib/pricing';
 import { getStock } from '@/lib/stock';
@@ -18,10 +21,10 @@ import { getStock } from '@/lib/stock';
 export const revalidate = 60;
 
 export default async function Home() {
-  const stock = await getStock();
+  const [stock, latest] = await Promise.all([getStock(), getPublishedArticles(3)]);
   // Without email delivery, contact messages would be silently dropped, so hide the form.
   const contactEnabled = isEmailConfigured();
-  const links = contactEnabled ? NAV_LINKS : NAV_LINKS.filter((l) => l.href !== '#contact');
+  const links = navLinks({ hasArticles: latest.length > 0 });
   return (
     <>
       <JsonLd />
@@ -34,6 +37,7 @@ export default async function Home() {
         <About />
         <Audience />
         <Author />
+        <Articles articles={latest} />
         <OrderSection stock={stock} />
         {contactEnabled && <ContactSection />}
       </main>

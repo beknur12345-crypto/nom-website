@@ -8,13 +8,7 @@ const noop = () => () => {};
 const shareText = `“${site.title}”: ${site.tagline}`;
 
 /** Share the site: native share sheet on phones (Messenger, Viber, …), Facebook and copy link everywhere. */
-export function Share({
-  tone = 'dark',
-  label = 'Найзууддаа хуваалцах',
-}: {
-  tone?: 'dark' | 'light';
-  label?: string;
-}) {
+export function Share({ tone = 'dark', label = 'Share хийх' }: { tone?: 'dark' | 'light'; label?: string }) {
   // false on the server, real value in the browser: no hydration mismatch.
   const canNative = useSyncExternalStore(
     noop,

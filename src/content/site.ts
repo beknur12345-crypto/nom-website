@@ -90,5 +90,6 @@ export const NAV_LINKS: readonly NavLink[] = [
   { href: '#book', label: 'Номын тухай' },
   { href: '#audience', label: 'Хэнд зориулав' },
   { href: '#author', label: 'Зохиогч' },
+  { href: '#articles', label: 'Нийтлэл' },
   { href: '#contact', label: 'Холбоо барих' },
 ];

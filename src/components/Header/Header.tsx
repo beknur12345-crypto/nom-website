@@ -4,7 +4,9 @@ import { useEffect, useState } from 'react';
 import { type NavLink, site } from '@/content/site';
 import styles from './Header.module.css';
 
-export function Header({ links }: { links: readonly NavLink[] }) {
+/** `home`: on the home page links are in-page anchors; elsewhere they point back to "/#…". */
+export function Header({ links, home = true }: { links: readonly NavLink[]; home?: boolean }) {
+  const prefix = home ? '' : '/';
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -17,7 +19,9 @@ export function Header({ links }: { links: readonly NavLink[] }) {
   // Highlight the nav link for the section currently in the middle of the screen.
   const [active, setActive] = useState<string | null>(null);
   useEffect(() => {
+    if (!home) return;
     const sections = links
+      .filter((l) => l.href.startsWith('#'))
       .map((l) => document.querySelector<HTMLElement>(l.href))
       .filter((el): el is HTMLElement => el !== null);
     if (!sections.length || !('IntersectionObserver' in window)) return;
@@ -32,11 +36,11 @@ export function Header({ links }: { links: readonly NavLink[] }) {
     );
     sections.forEach((s) => observer.observe(s));
     return () => observer.disconnect();
-  }, [links]);
+  }, [links, home]);
 
   return (
     <header className={styles.nav} id="top">
-      <a className={styles.logo} href="#top">
+      <a className={styles.logo} href={home ? '#top' : '/'}>
         {site.title}
       </a>
       <button
@@ -55,16 +59,20 @@ export function Header({ links }: { links: readonly NavLink[] }) {
         onClick={(e) => (e.target as HTMLElement).tagName === 'A' && setOpen(false)}
       >
         {links.map((l) => (
-          <a key={l.href} href={l.href} aria-current={active === l.href ? 'location' : undefined}>
+          <a
+            key={l.href}
+            href={l.href.startsWith('#') ? prefix + l.href : l.href}
+            aria-current={active === l.href ? 'location' : undefined}
+          >
             {l.label}
           </a>
         ))}
-        <a className={styles.navOrder} href="#order">
+        <a className={styles.navOrder} href={`${prefix}#order`}>
           Ном захиалах
         </a>
       </nav>
       {open && <div className={styles.backdrop} aria-hidden="true" onClick={() => setOpen(false)} />}
-      <a className={`btn btn--sm ${styles.cta}`} href="#order">
+      <a className={`btn btn--sm ${styles.cta}`} href={`${prefix}#order`}>
         Захиалах
       </a>
     </header>

@@ -1,4 +1,4 @@
-import { check, integer, pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+import { boolean, check, date, integer, pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 import { sql } from 'drizzle-orm';
 import { ORDER_STATUSES } from '@/lib/labels';
 import { PAY_METHODS } from '@/lib/schemas';
@@ -39,3 +39,22 @@ export const inventory = pgTable(
     check('inventory_stock_nonnegative', sql`${t.stock} >= 0`),
   ],
 );
+
+/** Articles ("Нийтлэл") written in the admin dashboard and shown on the site. */
+export const articles = pgTable('articles', {
+  id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
+  slug: text('slug').notNull().unique(),
+  title: text('title').notNull(),
+  excerpt: text('excerpt').notNull().default(''),
+  /** Plain text. Blank lines separate paragraphs; a line starting with "## " is a subheading. */
+  body: text('body').notNull().default(''),
+  /** Where it was first published (newspaper, site), optional. */
+  sourceName: text('source_name'),
+  sourceUrl: text('source_url'),
+  publishedOn: date('published_on', { mode: 'string' }).notNull(),
+  isPublished: boolean('is_published').notNull().default(false),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+});
+
+export type Article = typeof articles.$inferSelect;

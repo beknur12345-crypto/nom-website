@@ -147,3 +147,17 @@ export function TestNotification() {
     </span>
   );
 }
+
+/** Submit button that asks for confirmation first (for destructive actions). */
+export function ConfirmSubmit({ message, children }: { message: string; children: React.ReactNode }) {
+  return (
+    <Submit
+      className={styles.danger}
+      onClick={(e) => {
+        if (!window.confirm(message)) e.preventDefault();
+      }}
+    >
+      {children}
+    </Submit>
+  );
+}

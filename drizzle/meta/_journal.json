@@ -15,6 +15,13 @@
       "when": 1794951696487,
       "tag": "0001_inventory",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794952921389,
+      "tag": "0002_articles",
+      "breakpoints": true
     }
   ]
 }
