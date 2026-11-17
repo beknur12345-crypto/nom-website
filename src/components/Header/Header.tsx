@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { NAV_LINKS, site } from '@/content/site';
+import { type NavLink, site } from '@/content/site';
 import styles from './Header.module.css';
 
-export function Header() {
+export function Header({ links }: { links: readonly NavLink[] }) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export function Header() {
         className={`${styles.links} ${open ? styles.open : ''}`}
         onClick={(e) => (e.target as HTMLElement).tagName === 'A' && setOpen(false)}
       >
-        {NAV_LINKS.map((l) => (
+        {links.map((l) => (
           <a key={l.href} href={l.href}>
             {l.label}
           </a>

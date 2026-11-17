@@ -19,9 +19,11 @@ export function ContactSection() {
     <section className={styles.contact} id="contact" aria-labelledby="contact-title">
       <p className="eyebrow eyebrow--light">05</p>
       <h2 id="contact-title">Санал, захидал</h2>
-      <a className={styles.mail} href={`mailto:${site.email}`}>
-        {site.email}
-      </a>
+      {site.email && (
+        <a className={styles.mail} href={`mailto:${site.email}`}>
+          {site.email}
+        </a>
+      )}
 
       {result.status === 'success' ? (
         <div className={styles.done} role="status">
@@ -78,7 +80,7 @@ export function ContactSection() {
             <p className={styles.error} role="alert">
               {result.reason === 'rate-limited'
                 ? 'Хэт олон оролдлого хийлээ. Хэдэн минутын дараа дахин оролдоно уу.'
-                : `Зурвас илгээгдсэнгүй. ${site.email} хаягаар шууд бичнэ үү.`}
+                : `Зурвас илгээгдсэнгүй. Дахин оролдоно уу${site.email ? `, эсвэл ${site.email} хаягаар шууд бичнэ үү` : ''}.`}
             </p>
           )}
           <button className="btn btn--alt" type="submit" disabled={pending}>

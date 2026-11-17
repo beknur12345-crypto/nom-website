@@ -15,7 +15,8 @@ export const site = {
   author: 'Рэнцэнгийн Батсайхан',
   year: 2026,
   url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ulsturiintulaan.com',
-  email: 'info@ulsturiintulaan.com',
+  /** Public contact address. Leave null until the mailbox can receive mail (the domain has no MX record yet). */
+  email: null as string | null, // e.g. 'info@ulsturiintulaan.com'
   description: 'Улс төр, сонгуулийн технологи, стратеги болон манлайллын иж бүрэн гарын авлага.',
   tagline: 'Улс төр, сонгуулийн технологи, стратеги болон манлайллын иж бүрэн гарын авлага',
   inspiredBy: 'Inspired by the book Vom Kriege',
@@ -80,9 +81,14 @@ export const site = {
   },
 } as const;
 
-export const NAV_LINKS = [
+export interface NavLink {
+  href: string;
+  label: string;
+}
+
+export const NAV_LINKS: readonly NavLink[] = [
   { href: '#book', label: 'Номын тухай' },
   { href: '#audience', label: 'Хэнд зориулав' },
   { href: '#author', label: 'Зохиогч' },
   { href: '#contact', label: 'Холбоо барих' },
-] as const;
+];

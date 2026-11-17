@@ -8,25 +8,29 @@ import { Hero } from '@/components/Hero/Hero';
 import { JsonLd } from '@/components/JsonLd';
 import { MobileOrderBar } from '@/components/MobileOrderBar/MobileOrderBar';
 import { OrderSection } from '@/components/OrderForm/OrderSection';
-import { site } from '@/content/site';
+import { NAV_LINKS, site } from '@/content/site';
+import { isEmailConfigured } from '@/lib/email';
 import { formatMNT } from '@/lib/money';
 import { isPriceSet } from '@/lib/pricing';
 
 export default function Home() {
+  // Without email delivery, contact messages would be silently dropped, so hide the form.
+  const contactEnabled = isEmailConfigured();
+  const links = contactEnabled ? NAV_LINKS : NAV_LINKS.filter((l) => l.href !== '#contact');
   return (
     <>
       <JsonLd />
       <a className="skip-link" href="#main">
         Үндсэн агуулга руу очих
       </a>
-      <Header />
+      <Header links={links} />
       <main id="main">
         <Hero />
         <About />
         <Audience />
         <Author />
         <OrderSection />
-        <ContactSection />
+        {contactEnabled && <ContactSection />}
       </main>
       <Footer />
       <MobileOrderBar price={isPriceSet() ? formatMNT(site.pricing.unitPrice) : null} />

@@ -7,7 +7,7 @@ export function Footer() {
       <span>
         © {site.year} {site.author}
       </span>
-      <a href={`mailto:${site.email}`}>{site.email}</a>
+      {site.email && <a href={`mailto:${site.email}`}>{site.email}</a>}
     </footer>
   );
 }

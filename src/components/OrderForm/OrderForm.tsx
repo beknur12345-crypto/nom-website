@@ -11,7 +11,6 @@ import { ORDER_FIELDS, PAY_METHODS, orderSchema, type PayMethod } from '@/lib/sc
 import { Field } from '@/components/form/Field';
 import { Honeypot } from '@/components/form/Honeypot';
 import { useForm } from '@/components/form/useForm';
-import { PRICE_PLACEHOLDER } from '@/components/Price';
 import styles from './OrderForm.module.css';
 
 const PAY_LABELS: Record<PayMethod, string> = { qr: 'QR код', bank: 'Дансаар', card: 'Картаар' };
@@ -28,8 +27,8 @@ export function OrderForm() {
 
   const totals = calculateTotals(qty);
   const priced = isPriceSet();
-  const show = (amount: number, placeholder = PRICE_PLACEHOLDER) =>
-    priced ? formatMNT(amount) : placeholder;
+  /** Payment details are shown only once the price and real QR/bank details are set in content/site.ts. */
+  const paymentReady = priced && !site.payment.qr.isSample;
 
   const done = result.status === 'success';
   useEffect(() => {
@@ -159,8 +158,14 @@ export function OrderForm() {
           ))}
         </fieldset>
 
-        <div className={styles.panel}>
-          {pay === 'qr' && (
+        <div className={paymentReady ? styles.panel : styles.pending}>
+          {!paymentReady && (
+            <p>
+              Төлбөр хийх хэлбэрээ сонгоно уу. Захиалгыг тань хүлээн авмагц бид утсаар холбогдож үнэ,
+              төлбөрийн мэдээллийг хүргэнэ.
+            </p>
+          )}
+          {paymentReady && pay === 'qr' && (
             <>
               <div className={styles.qr}>
                 <Image
@@ -177,7 +182,7 @@ export function OrderForm() {
               <p>Банкны аппликейшнээр уншуулна уу</p>
             </>
           )}
-          {pay === 'bank' && (
+          {paymentReady && pay === 'bank' && (
             <dl className={styles.bank}>
               <div>
                 <dt>Банк</dt>
@@ -197,31 +202,33 @@ export function OrderForm() {
               </div>
             </dl>
           )}
-          {pay === 'card' && (
+          {paymentReady && pay === 'card' && (
             <p className={styles.note}>Картын төлбөрийн холболт хийгдсэний дараа энэ хэсэг идэвхжинэ.</p>
           )}
         </div>
 
-        <div className={styles.summary}>
-          <div>
-            <span>Ном × {totals.quantity}</span>
-            <span>{show(totals.books)}</span>
+        {paymentReady && (
+          <div className={styles.summary}>
+            <div>
+              <span>Ном × {totals.quantity}</span>
+              <span>{formatMNT(totals.books)}</span>
+            </div>
+            <div>
+              <span>Хүргэлт</span>
+              <span>{formatMNT(totals.delivery)}</span>
+            </div>
+            <div className={styles.total}>
+              <span>Нийт дүн</span>
+              <span>{formatMNT(totals.total)}</span>
+            </div>
           </div>
-          <div>
-            <span>Хүргэлт</span>
-            <span>{show(totals.delivery, '₮0,000')}</span>
-          </div>
-          <div className={styles.total}>
-            <span>Нийт дүн</span>
-            <span>{show(totals.total)}</span>
-          </div>
-        </div>
+        )}
 
         {result.status === 'error' && (
           <p className={styles.error} role="alert">
             {result.reason === 'rate-limited'
               ? 'Хэт олон оролдлого хийлээ. Хэдэн минутын дараа дахин оролдоно уу.'
-              : `Захиалга илгээгдсэнгүй. Дахин оролдоно уу, эсвэл ${site.email} хаягаар холбогдоно уу.`}
+              : `Захиалга илгээгдсэнгүй. Дахин оролдоно уу${site.email ? `, эсвэл ${site.email} хаягаар холбогдоно уу` : ''}.`}
           </p>
         )}
         <button className="btn btn--wide" type="submit" disabled={pending}>

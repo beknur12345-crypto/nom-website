@@ -139,6 +139,13 @@
 .bank dd {
   text-align: right;
 }
+.pending {
+  font-size: 15px;
+  line-height: 1.5;
+  padding: 18px 0 24px;
+  margin-bottom: 16px;
+  border-bottom: 3px solid var(--ink);
+}
 .note {
   padding: 60px 20px;
   font-size: 16px;
