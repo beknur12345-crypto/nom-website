@@ -14,6 +14,26 @@ export function Header({ links }: { links: readonly NavLink[] }) {
     return () => document.removeEventListener('keydown', onKey);
   }, [open]);
 
+  // Highlight the nav link for the section currently in the middle of the screen.
+  const [active, setActive] = useState<string | null>(null);
+  useEffect(() => {
+    const sections = links
+      .map((l) => document.querySelector<HTMLElement>(l.href))
+      .filter((el): el is HTMLElement => el !== null);
+    if (!sections.length || !('IntersectionObserver' in window)) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          const id = `#${e.target.id}`;
+          setActive((prev) => (e.isIntersecting ? id : prev === id ? null : prev));
+        }
+      },
+      { rootMargin: '-45% 0px -50% 0px' },
+    );
+    sections.forEach((s) => observer.observe(s));
+    return () => observer.disconnect();
+  }, [links]);
+
   return (
     <header className={styles.nav} id="top">
       <a className={styles.logo} href="#top">
@@ -35,7 +55,7 @@ export function Header({ links }: { links: readonly NavLink[] }) {
         onClick={(e) => (e.target as HTMLElement).tagName === 'A' && setOpen(false)}
       >
         {links.map((l) => (
-          <a key={l.href} href={l.href}>
+          <a key={l.href} href={l.href} aria-current={active === l.href ? 'location' : undefined}>
             {l.label}
           </a>
         ))}

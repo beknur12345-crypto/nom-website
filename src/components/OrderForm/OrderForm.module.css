@@ -1,13 +1,13 @@
 .order {
   display: grid;
-  grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
+  grid-template-columns: minmax(420px, 1fr) minmax(0, 1060px);
   background: var(--paper);
   scroll-margin-top: var(--nav-h);
 }
 .intro {
   background: var(--red);
   color: var(--paper);
-  padding: 56px var(--gutter);
+  padding: 56px var(--gutter) 56px var(--pad-x);
   position: relative;
   overflow: hidden;
   min-height: 760px;
@@ -17,7 +17,7 @@
 }
 .cover {
   position: absolute;
-  left: 58px;
+  left: var(--pad-x);
   top: 290px;
   width: 372px;
   transform: rotate(-7deg);

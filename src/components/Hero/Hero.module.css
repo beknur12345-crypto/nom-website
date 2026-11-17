@@ -6,8 +6,7 @@
   grid-template-columns: 1fr minmax(0, 500px);
   gap: 40px;
   align-items: center;
-  padding: 24px var(--gutter) 36px;
-  padding-right: clamp(16px, 6.4vw, 92px);
+  padding: 24px var(--pad-x) 36px;
   overflow: hidden;
 }
 .bands {

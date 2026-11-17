@@ -10,6 +10,9 @@
   --danger: #a3211a;
   --danger-on-dark: #ffb4a8;
   --gutter: clamp(16px, 3.9vw, 56px);
+  --content-max: 1280px;
+  /* Side padding that keeps content in a centred column while backgrounds stay full width. */
+  --pad-x: max(var(--gutter), calc((100vw - var(--content-max)) / 2));
   --nav-h: 72px;
   --font-display: var(--font-oswald), 'Arial Narrow', sans-serif;
   --font-body: var(--font-manrope), system-ui, sans-serif;

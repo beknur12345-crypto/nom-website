@@ -6,7 +6,7 @@
   justify-content: center;
   align-items: center;
   gap: 40px 72px;
-  padding: 80px var(--gutter);
+  padding: 80px var(--pad-x);
 }
 .portrait {
   width: 100%;

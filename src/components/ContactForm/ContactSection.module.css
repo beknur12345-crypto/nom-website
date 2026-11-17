@@ -1,7 +1,7 @@
 .contact {
   background: var(--navy);
   color: var(--paper);
-  padding: 60px var(--gutter);
+  padding: 60px var(--pad-x);
 }
 .form,
 .done {

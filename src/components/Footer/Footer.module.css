@@ -5,6 +5,6 @@
   flex-wrap: wrap;
   gap: 8px 24px;
   justify-content: space-between;
-  padding: 20px var(--gutter);
+  padding: 20px var(--pad-x);
   font-size: 13px;
 }
