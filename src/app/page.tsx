@@ -37,8 +37,8 @@ export default async function Home() {
         <About />
         <Audience />
         <Author />
-        <Articles articles={latest} />
         <OrderSection stock={stock} />
+        <Articles articles={latest} />
         {contactEnabled && <ContactSection />}
       </main>
       <Footer />

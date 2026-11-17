@@ -70,7 +70,11 @@
   max-height: calc(100vh - 130px);
   width: auto;
   justify-self: end;
-  filter: drop-shadow(-22px 26px 26px rgba(20, 10, 5, 0.5));
+  /* Soft lift: a tight contact shadow plus a wide, offset one, so the cover reads as a physical book. */
+  box-shadow:
+    0 0 0 1px rgb(243 231 207 / 0.18),
+    0 3px 6px rgb(0 0 0 / 0.45),
+    -18px 28px 44px -4px rgb(0 0 0 / 0.7);
 }
 
 @media (max-width: 900px) {
