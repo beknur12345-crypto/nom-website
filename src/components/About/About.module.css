@@ -70,3 +70,35 @@
     border-left-width: 8px;
   }
 }
+
+/* Scroll reveals: the portrait wipes up, the thesis band unrolls from the left. */
+@keyframes wipeUp {
+  from {
+    clip-path: inset(100% -40px -40px 0);
+  }
+  to {
+    clip-path: inset(0 -40px -40px 0);
+  }
+}
+@keyframes unroll {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .figure img {
+      animation: wipeUp linear both;
+      animation-timeline: view();
+      animation-range: entry 5% cover 28%;
+    }
+    .thesis {
+      animation: unroll linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 25%;
+    }
+  }
+}

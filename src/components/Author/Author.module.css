@@ -37,3 +37,34 @@
     max-width: 440px;
   }
 }
+
+@keyframes wipeUp {
+  from {
+    clip-path: inset(100% 0 0 0);
+    scale: 1.06;
+  }
+  to {
+    clip-path: inset(0);
+    scale: 1;
+  }
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    translate: 0 40px;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .portrait {
+      animation: wipeUp linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 28%;
+    }
+    .text {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 22%;
+    }
+  }
+}

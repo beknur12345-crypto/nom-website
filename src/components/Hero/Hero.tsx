@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import cover from '@/assets/book.webp';
+import crowd from '@/assets/hero-crowd.webp';
 import { site } from '@/content/site';
 import { Price } from '@/components/Price';
 import styles from './Hero.module.css';
@@ -7,11 +8,16 @@ import styles from './Hero.module.css';
 export function Hero() {
   return (
     <section className={styles.hero}>
-      <svg className={styles.bands} viewBox="0 0 1440 760" preserveAspectRatio="none" aria-hidden="true">
-        <polygon points="880,0 1200,0 1440,250 1440,760 1270,760" fill="#E3C99C" />
-        <polygon points="1200,0 1440,0 1440,250" fill="#6E251D" />
-        <polygon points="0,500 0,760 270,760" fill="#6E251D" />
-      </svg>
+      <Image
+        className={styles.backdrop}
+        src={crowd}
+        alt=""
+        fill
+        loading="eager"
+        sizes="100vw"
+        placeholder="blur"
+      />
+      <div className={styles.shade} aria-hidden="true" />
       <div className={styles.text}>
         <h1>
           Улс
@@ -39,7 +45,7 @@ export function Hero() {
         className={styles.book}
         src={cover}
         alt="“Улс төрийн тулаан” номын хавтас: хоёр хуруугаа өргөсөн гар, хурууны үзүүрээс утаа савсана"
-        priority
+        preload
         sizes="(max-width: 900px) min(72vw, 340px), 500px"
         placeholder="blur"
       />

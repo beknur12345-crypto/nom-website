@@ -9,7 +9,7 @@ export function Author() {
       <Image
         className={styles.portrait}
         src={photo}
-        alt={`${site.author}: хар пиджактай, хоёр гараараа урагш заан зогсож байна`}
+        alt={`${site.author}: хар цагаан хөрөг`}
         sizes="(max-width: 900px) min(100vw, 440px), 440px"
         placeholder="blur"
       />

@@ -59,3 +59,20 @@
     padding: 48px var(--gutter);
   }
 }
+
+/* The Түдэв quote card slides in from the side as it enters. */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    translate: 60px 0;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .quote {
+      animation: slideIn linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 22%;
+    }
+  }
+}
