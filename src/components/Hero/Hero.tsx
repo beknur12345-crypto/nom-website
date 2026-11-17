@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import cover from '@/assets/book.webp';
+import cover from '@/assets/hero-cover.webp';
 import crowd from '@/assets/hero-crowd.webp';
 import { site } from '@/content/site';
 import { Price } from '@/components/Price';
