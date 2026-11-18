@@ -6,6 +6,8 @@
   gap: 8px 24px;
   justify-content: space-between;
   padding: 20px var(--pad-x);
+  /* Keep the last line clear of the iPhone home indicator. */
+  padding-bottom: calc(20px + env(safe-area-inset-bottom));
   font-size: 13px;
   align-items: center;
 }

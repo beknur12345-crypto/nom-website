@@ -7,14 +7,10 @@ import { Footer } from '@/components/Footer/Footer';
 import { Header } from '@/components/Header/Header';
 import { Hero } from '@/components/Hero/Hero';
 import { JsonLd } from '@/components/JsonLd';
-import { MobileOrderBar } from '@/components/MobileOrderBar/MobileOrderBar';
 import { OrderSection } from '@/components/OrderForm/OrderSection';
-import { site } from '@/content/site';
 import { getPublishedArticles } from '@/lib/articles';
 import { isEmailConfigured } from '@/lib/email';
 import { navLinks } from '@/lib/nav';
-import { formatMNT } from '@/lib/money';
-import { isPriceSet } from '@/lib/pricing';
 import { getStock } from '@/lib/stock';
 
 // Re-check the stock at most once a minute (orders refresh it immediately).
@@ -42,7 +38,6 @@ export default async function Home() {
         {contactEnabled && <ContactSection />}
       </main>
       <Footer />
-      <MobileOrderBar price={isPriceSet() ? formatMNT(site.pricing.unitPrice) : null} />
     </>
   );
 }

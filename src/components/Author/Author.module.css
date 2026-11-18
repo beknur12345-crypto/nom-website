@@ -66,5 +66,11 @@
       animation-timeline: view();
       animation-range: entry 0% cover 22%;
     }
+    @media (max-width: 900px) {
+      .portrait,
+      .text {
+        animation-range: entry 0% entry 240px;
+      }
+    }
   }
 }

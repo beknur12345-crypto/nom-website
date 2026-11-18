@@ -59,13 +59,18 @@
   }
   .figure {
     position: static;
-    max-width: 420px;
+    /* Leave room for the red offset shadow so it stays inside the screen. */
+    max-width: min(420px, calc(100% - 10px));
     margin: 0;
+  }
+  .figure img {
+    box-shadow: 10px 10px 0 var(--red);
   }
   .text .lede {
     font-size: 19px;
   }
   .thesis {
+    line-height: 1.18;
     padding: 40px var(--gutter);
     border-left-width: 8px;
   }
@@ -99,6 +104,12 @@
       animation: unroll linear both;
       animation-timeline: view();
       animation-range: entry 0% cover 25%;
+    }
+    @media (max-width: 900px) {
+      .figure img,
+      .thesis {
+        animation-range: entry 0% entry 240px;
+      }
     }
   }
 }

@@ -240,6 +240,11 @@
       animation-timeline: view();
       animation-range: entry 0% cover 25%;
     }
+    @media (max-width: 900px) {
+      .cover {
+        animation-range: entry 0% entry 240px;
+      }
+    }
   }
 }
 
