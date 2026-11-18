@@ -103,7 +103,6 @@ a {
   background: var(--ink);
   color: var(--paper);
   border: 0;
-  cursor: pointer;
   font: 600 19px var(--font-display);
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -209,5 +208,41 @@ select.input {
   *::after {
     transition: none !important;
     animation: none !important;
+  }
+}
+
+/* Brand cursor: the hand mark from the cover, on devices with a mouse or trackpad.
+   The click point (4 4) is the tip of the upper-left finger. */
+@media (hover: hover) and (pointer: fine) {
+  html {
+    cursor:
+      url('/cursor/hand.png') 4 4,
+      auto;
+    cursor:
+      image-set(url('/cursor/hand.png') 1x, url('/cursor/hand@2x.png') 2x) 4 4,
+      auto;
+  }
+  a,
+  button,
+  select,
+  summary,
+  label[for],
+  [role='button'],
+  input[type='checkbox'],
+  input[type='radio'],
+  input[type='submit'] {
+    cursor:
+      url('/cursor/hand-active.png') 4 4,
+      pointer;
+    cursor:
+      image-set(url('/cursor/hand-active.png') 1x, url('/cursor/hand-active@2x.png') 2x) 4 4,
+      pointer;
+  }
+  input:not([type='checkbox'], [type='radio'], [type='submit']),
+  textarea {
+    cursor: text;
+  }
+  :disabled {
+    cursor: not-allowed;
   }
 }

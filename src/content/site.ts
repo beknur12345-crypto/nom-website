@@ -58,15 +58,21 @@ export const site = {
     note: 'Америкт Poli sci-101 буюу улс төрийн анхдагч мэдлэггүй хүн улс төрөөр оролдох нь бүтэхгүй ажил гэх ойлголт бат хэвшсэн байдаг.',
   },
 
-  /**
-   * First paragraph is the author's own text. The rest is a Mongolian rendering of
-   * an English bio supplied with it — have the author confirm the wording.
-   */
+  /** First paragraph is the author's own text; the rest is kept in English as supplied. */
   authorBio: [
-    'Рэнцэнгийн Батсайхан (1965) улс төр, стратегийн харилцаа, сонгуулийн технологийн чиглэлээр 1996 оноос хойш ажилласан.',
-    'Нирун Батсайхан нэрээр ч танигдсан тэрээр кино найруулагч, улс төрийн харилцааны стратегич бөгөөд олон нийтийн өгүүлэмж, улс төрийн брэнд, стратегийн мессеж, нэр хүндийн менежмент, сонгуулийн кампанит ажлын харилцааны чиглэлээр ажилладаг.',
-    'Медиа бүтээл, өгүүлэмжийн туршлагадаа тулгуурлан улс төрийн удирдагчид, байгууллага, төрийн институцуудад олон нийттэй харилцах, нийтийн ойлголтыг төлөвшүүлэх, нарийн төвөгтэй санааг ойлгомжтой, үнэмшилтэй хүргэхэд нь тусалдаг.',
-  ],
+    {
+      lang: 'mn',
+      text: 'Рэнцэнгийн Батсайхан (1965) улс төр, стратегийн харилцаа, сонгуулийн технологийн чиглэлээр 1996 оноос хойш ажилласан.',
+    },
+    {
+      lang: 'en',
+      text: 'Rentsen Batsaikhan (also known as Nirun Batsaikhan) is a prominent Mongolian film director and a highly influential political communication strategist and media practitioner whose work focuses on public narratives, political branding, strategic messaging, reputation management, and campaign communications.',
+    },
+    {
+      lang: 'en',
+      text: 'Drawing on his experience in media production and storytelling, he applies communication strategies to help political leaders, organisations, and public institutions engage audiences, shape public perception, and communicate complex ideas clearly and persuasively.',
+    },
+  ] as const,
 
   payment: {
     /** Replace public/qr-sample.svg with the real QR and set isSample to false. */

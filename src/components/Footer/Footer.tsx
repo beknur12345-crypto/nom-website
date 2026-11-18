@@ -1,3 +1,4 @@
+import { Logo } from '@/components/Logo/Logo';
 import { Share } from '@/components/Share/Share';
 import { site } from '@/content/site';
 import styles from './Footer.module.css';
@@ -6,6 +7,7 @@ import styles from './Footer.module.css';
 export function Footer({ share = true }: { share?: boolean } = {}) {
   return (
     <footer className={styles.footer}>
+      <Logo full className={styles.logo} />
       <span>
         © {site.year} {site.author}
       </span>

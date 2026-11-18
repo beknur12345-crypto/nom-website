@@ -64,7 +64,6 @@
   background: var(--ink);
   color: var(--paper);
   font-size: 20px;
-  cursor: pointer;
 }
 .qty button:disabled {
   opacity: 0.4;
@@ -84,7 +83,6 @@
 }
 .tabs label {
   flex: 1;
-  cursor: pointer;
 }
 .tabs input {
   position: absolute;

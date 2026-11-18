@@ -11,3 +11,11 @@
   font-size: 13px;
   align-items: center;
 }
+.logo {
+  flex-basis: 100%;
+  width: min(300px, 100%);
+  max-width: 300px;
+  margin: 8px 0 12px;
+  /* Brighter red so the tie reads on the dark footer. */
+  --logo-accent: #e0484a;
+}

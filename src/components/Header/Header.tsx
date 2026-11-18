@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { type NavLink, site } from '@/content/site';
+import type { NavLink } from '@/content/site';
+import { Logo } from '@/components/Logo/Logo';
 import styles from './Header.module.css';
 
 /**
@@ -52,7 +53,7 @@ export function Header({
   return (
     <header className={styles.nav} id="top">
       <a className={styles.logo} href={home ? '#top' : '/'}>
-        {site.title}
+        <Logo />
       </a>
       <button
         className={styles.menu}

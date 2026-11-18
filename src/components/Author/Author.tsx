@@ -17,8 +17,8 @@ export function Author() {
         <p className="eyebrow eyebrow--light">Зохиогчийн тухай</p>
         <h2 id="author-title">{site.author}</h2>
         {site.authorBio.map((p, i) => (
-          <p key={p.slice(0, 24)} className={i === 0 ? styles.lede : undefined}>
-            {p}
+          <p key={p.text.slice(0, 24)} lang={p.lang} className={i === 0 ? styles.lede : undefined}>
+            {p.text}
           </p>
         ))}
       </div>
