@@ -11,6 +11,7 @@
   padding: 0 var(--pad-x);
 }
 .logo {
+  min-width: 0;
   padding: 10px 0;
   font: 700 21px var(--font-display);
   letter-spacing: 0.05em;
@@ -91,7 +92,8 @@
     margin-left: auto;
   }
 }
-@media (max-width: 420px) {
+/* Phones up to the widest iPhones (430px) and a little beyond. */
+@media (max-width: 480px) {
   .logo {
     font-size: 17px;
   }
