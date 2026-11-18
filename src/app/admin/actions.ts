@@ -1,7 +1,6 @@
 'use server';
 
 import { eq } from 'drizzle-orm';
-import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { getDb } from '@/db';
@@ -9,6 +8,7 @@ import { orders } from '@/db/schema';
 import { checkPassword, createSession, destroySession, requireAdmin } from '@/lib/admin-auth';
 import { isStatus } from '@/lib/admin-orders';
 import { createRateLimiter } from '@/lib/rate-limit';
+import { clientIp, record, recentCount } from '@/lib/shared-limit';
 import { releaseStock, retakeStock, setStock } from '@/lib/stock';
 import { sendTelegram } from '@/lib/telegram';
 
@@ -17,12 +17,19 @@ const loginLimiter = createRateLimiter({ limit: 8, windowMs: 15 * 60_000 });
 export type LoginState = { error?: string };
 
 export async function login(_prev: LoginState, formData: FormData): Promise<LoginState> {
-  const h = await headers();
-  const ip = h.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
-  if (!loginLimiter(ip)) return { error: 'Хэт олон оролдлого. 15 минутын дараа дахин оролдоно уу.' };
+  const ip = await clientIp();
+  const tooMany = { error: 'Хэт олон буруу оролдлого. 15 минутын дараа дахин оролдоно уу.' };
+  if (!loginLimiter(ip)) return tooMany;
+  // Shared across all server instances: 5 wrong tries per IP in 15 min, 20 from everyone in an hour.
+  const [mine, everyone] = await Promise.all([
+    recentCount('login-fail', 15 * 60_000, ip),
+    recentCount('login-fail', 60 * 60_000),
+  ]);
+  if (mine >= 5 || everyone >= 20) return tooMany;
 
   const password = formData.get('password');
   if (typeof password !== 'string' || !checkPassword(password)) {
+    await record('login-fail', ip);
     return { error: 'Нууц үг буруу байна.' };
   }
   await createSession();

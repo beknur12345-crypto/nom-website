@@ -1,4 +1,4 @@
-import { boolean, check, date, integer, pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+import { boolean, check, date, index, integer, pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 import { sql } from 'drizzle-orm';
 import { ORDER_STATUSES } from '@/lib/labels';
 import { PAY_METHODS } from '@/lib/schemas';
@@ -58,3 +58,15 @@ export const articles = pgTable('articles', {
 });
 
 export type Article = typeof articles.$inferSelect;
+
+/** Log of rate-limited events (failed logins, orders, messages), shared by every server instance. */
+export const rateEvents = pgTable(
+  'rate_events',
+  {
+    id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
+    kind: text('kind').notNull(),
+    key: text('key').notNull(),
+    at: timestamp('at', { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [index('rate_events_kind_at_idx').on(t.kind, t.at)],
+);

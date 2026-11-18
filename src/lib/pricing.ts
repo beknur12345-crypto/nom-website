@@ -1,7 +1,7 @@
 import { site } from '@/content/site';
 
 export const MIN_QTY = 1;
-export const MAX_QTY = 99;
+export const MAX_QTY = 10;
 
 export interface Pricing {
   /** Price of one book in tugrik. 0 means "not set yet". */

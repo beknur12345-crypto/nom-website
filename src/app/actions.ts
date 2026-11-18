@@ -1,6 +1,5 @@
 'use server';
 
-import { headers } from 'next/headers';
 import { getDb } from '@/db';
 import { orders } from '@/db/schema';
 import { contactEmail, orderEmail, orderTelegram } from '@/emails/templates';
@@ -8,6 +7,7 @@ import { isEmailConfigured, notifyOwner } from '@/lib/email';
 import type { FormResult } from '@/lib/form-result';
 import { calculateTotals } from '@/lib/pricing';
 import { createRateLimiter } from '@/lib/rate-limit';
+import { clientIp, record, recentCount } from '@/lib/shared-limit';
 import { getStock, releaseStock, reserveStock } from '@/lib/stock';
 import { sendTelegram } from '@/lib/telegram';
 import { revalidatePath } from 'next/cache';
@@ -25,9 +25,14 @@ import { site } from '@/content/site';
 const orderLimiter = createRateLimiter({ limit: 5, windowMs: 10 * 60_000 });
 const contactLimiter = createRateLimiter({ limit: 5, windowMs: 10 * 60_000 });
 
-async function clientIp(): Promise<string> {
-  const h = await headers();
-  return h.get('x-forwarded-for')?.split(',')[0]?.trim() || h.get('x-real-ip') || 'unknown';
+const HOUR = 60 * 60_000;
+
+/** Fast per-instance check first, then the limit shared by all instances. */
+async function allowed(kind: 'order' | 'contact', ip: string, memory: (key: string) => boolean) {
+  if (!memory(ip)) return false;
+  if ((await recentCount(kind, HOUR, ip)) >= 6) return false;
+  await record(kind, ip);
+  return true;
 }
 
 const isBot = (formData: FormData) => Boolean(formData.get(HONEYPOT_FIELD));
@@ -41,7 +46,8 @@ export async function submitOrder(formData: FormData): Promise<FormResult> {
   const parsed = orderSchema.safeParse(formDataToObject(formData, ORDER_FIELDS));
   if (!parsed.success) return { status: 'invalid', errors: fieldErrors(parsed.error) };
 
-  if (!orderLimiter(await clientIp())) return { status: 'error', reason: 'rate-limited' };
+  if (!(await allowed('order', await clientIp(), orderLimiter)))
+    return { status: 'error', reason: 'rate-limited' };
 
   const order = parsed.data;
   const totals = calculateTotals(order.quantity);
@@ -102,7 +108,8 @@ export async function submitContact(formData: FormData): Promise<FormResult> {
   const parsed = contactSchema.safeParse(formDataToObject(formData, CONTACT_FIELDS));
   if (!parsed.success) return { status: 'invalid', errors: fieldErrors(parsed.error) };
 
-  if (!contactLimiter(await clientIp())) return { status: 'error', reason: 'rate-limited' };
+  if (!(await allowed('contact', await clientIp(), contactLimiter)))
+    return { status: 'error', reason: 'rate-limited' };
 
   if (!isEmailConfigured()) {
     console.info('[contact] test mode, not sent:', parsed.data);
