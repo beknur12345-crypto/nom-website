@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Manrope, Oswald } from 'next/font/google';
 import { SiteAnalytics } from '@/components/SiteAnalytics';
+import { TapMark } from '@/components/TapMark/TapMark';
 import { site } from '@/content/site';
 import './globals.css';
 
@@ -45,6 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         {children}
         <SiteAnalytics />
+        <TapMark />
       </body>
     </html>
   );
