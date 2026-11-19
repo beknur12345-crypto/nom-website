@@ -58,7 +58,7 @@ export const site = {
     note: 'Америкт Poli sci-101 буюу улс төрийн анхдагч мэдлэггүй хүн улс төрөөр оролдох нь бүтэхгүй ажил гэх ойлголт бат хэвшсэн байдаг.',
   },
 
-  /** First paragraph is the author's own text; the rest is kept in English as supplied. */
+  /** Author bio. First paragraph is the author's own text; the rest is the English text as supplied, labelled as AI-written. */
   authorBio: [
     {
       lang: 'mn',
@@ -66,7 +66,7 @@ export const site = {
     },
     {
       lang: 'en',
-      text: 'Rentsen Batsaikhan (also known as Nirun Batsaikhan) is a prominent Mongolian film director and a highly influential political communication strategist and media practitioner whose work focuses on public narratives, political branding, strategic messaging, reputation management, and campaign communications.',
+      text: 'AI (ChatGPT): Rentsen Batsaikhan (also known as Nirun Batsaikhan) is a prominent Mongolian film director and a highly influential political communication strategist and media practitioner whose work focuses on public narratives, political branding, strategic messaging, reputation management, and campaign communications.',
     },
     {
       lang: 'en',
