@@ -2,6 +2,9 @@ import type { NextConfig } from 'next';
 
 const isDev = process.env.NODE_ENV !== 'production';
 
+/** Photos and PDFs uploaded from the admin dashboard live in Vercel Blob. */
+const BLOB_HOST = 'https://*.public.blob.vercel-storage.com';
+
 /**
  * Only this site's own files may load. 'unsafe-inline' is needed for Next.js's
  * inline bootstrap scripts without nonces; nonces would force every page to
@@ -12,9 +15,10 @@ const csp = [
   // In production Vercel Analytics is served from this domain (/_vercel/insights); in dev it loads from Vercel's CDN.
   `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval' https://va.vercel-scripts.com" : ''}`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob:",
+  `img-src 'self' data: blob: ${BLOB_HOST}`,
   "font-src 'self'",
-  `connect-src 'self'${isDev ? ' ws: wss:' : ''}`,
+  // vercel.com/api/blob receives the admin's direct uploads.
+  `connect-src 'self' https://vercel.com ${BLOB_HOST}${isDev ? ' ws: wss:' : ''}`,
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
@@ -32,7 +36,12 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
-  images: { formats: ['image/avif', 'image/webp'] },
+  images: {
+    formats: ['image/avif', 'image/webp'],
+    remotePatterns: [
+      { protocol: 'https', hostname: '*.public.blob.vercel-storage.com', pathname: '/medee/**' },
+    ],
+  },
   async headers() {
     return [{ source: '/:path*', headers: securityHeaders }];
   },

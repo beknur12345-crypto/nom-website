@@ -106,3 +106,17 @@
     padding: 40px var(--gutter) 64px;
   }
 }
+
+.cover {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  display: block;
+  margin-bottom: 4px;
+}
+.attach {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--red);
+}

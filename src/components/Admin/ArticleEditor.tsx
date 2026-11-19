@@ -1,16 +1,18 @@
 'use client';
 
 import Link from 'next/link';
-import { useActionState } from 'react';
+import { useActionState, useState } from 'react';
 import { saveArticle, type ArticleState } from '@/app/admin/article-actions';
 import type { Article } from '@/db/schema';
 import { Submit } from './ClientBits';
+import { MediaPicker } from './MediaPicker';
 import styles from './Admin.module.css';
 
 const today = () => new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Ulaanbaatar' });
 
-export function ArticleEditor({ article }: { article?: Article }) {
+export function ArticleEditor({ article, uploadsEnabled }: { article?: Article; uploadsEnabled: boolean }) {
   const [state, action] = useActionState<ArticleState, FormData>(saveArticle, {});
+  const [uploading, setUploading] = useState(false);
   const e = state.errors ?? {};
   const err = (k: keyof typeof e) =>
     e[k] ? (
@@ -94,20 +96,29 @@ export function ArticleEditor({ article }: { article?: Article }) {
         <textarea className="input" name="body" rows={16} defaultValue={article?.body} {...a11y('body')} />
         <span className={styles.hint}>
           Догол мөрийн хооронд хоосон мөр үлдээнэ. Дэд гарчиг бол мөрийн эхэнд <code>## </code> бичнэ. Өөр
-          сайтад гарсан мэдээ бол текстгүйгээр зөвхөн холбоосыг нь оруулж болно.
+          сайтад гарсан мэдээ бол текстгүйгээр зөвхөн холбоосыг нь, эсвэл зөвхөн зураг, PDF оруулж болно.
         </span>
         {err('body')}
       </label>
 
+      <MediaPicker
+        initialImages={article?.images ?? []}
+        initialFiles={article?.files ?? []}
+        enabled={uploadsEnabled}
+        error={e.media}
+        onBusyChange={setUploading}
+      />
+
       <div className={styles.editorActions}>
-        <Submit className="btn" name="intent" value="publish">
+        <Submit className="btn" name="intent" value="publish" disabled={uploading}>
           {article?.isPublished ? 'Хадгалах' : 'Нийтлэх'}
         </Submit>
         {!article?.isPublished && (
-          <Submit className="btn btn--alt" name="intent" value="draft">
+          <Submit className="btn btn--alt" name="intent" value="draft" disabled={uploading}>
             Ноорог болгон хадгалах
           </Submit>
         )}
+        {uploading && <span className={styles.hint}>Файл хуулж дуустал хүлээнэ үү…</span>}
         <Link className={styles.clear} href="/admin/niitlel">
           Болих
         </Link>

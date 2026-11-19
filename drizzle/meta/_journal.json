@@ -29,6 +29,13 @@
       "when": 1794989699178,
       "tag": "0003_rate_events",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1795075180364,
+      "tag": "0004_article_media",
+      "breakpoints": true
     }
   ]
 }

@@ -68,3 +68,64 @@
     font-size: 17px;
   }
 }
+
+.cover {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.gallery a {
+  display: block;
+}
+.gallery img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+}
+.files {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+.files a {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 14px;
+  padding: 14px 16px;
+  border: 3px solid var(--ink);
+  background: var(--card);
+  text-decoration: none;
+  color: var(--ink);
+}
+.files a:hover .fileName,
+.files a:focus-visible .fileName {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.fileBadge {
+  font-weight: 800;
+  font-size: 13px;
+  background: var(--red);
+  color: var(--paper);
+  padding: 4px 8px;
+}
+.fileName {
+  flex: 1 1 200px;
+  font-weight: 700;
+  font-size: 17px;
+}
+.fileSize {
+  font-size: 14px;
+  color: var(--navy);
+  font-weight: 600;
+}

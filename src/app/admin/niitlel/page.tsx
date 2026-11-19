@@ -27,8 +27,8 @@ export default async function ArticlesAdmin({ searchParams }: PageProps<'/admin/
         )}
         <div className={styles.toolbar}>
           <p>
-            Нийтлэгдсэн мэдээнүүд нүүр хуудасны “Мэдээ мэдээлэл” хэсэг болон <Link href="/niitlel">/niitlel</Link>{' '}
-            хуудсанд гарна.
+            Нийтлэгдсэн мэдээнүүд нүүр хуудасны “Мэдээ мэдээлэл” хэсэг болон{' '}
+            <Link href="/niitlel">/niitlel</Link> хуудсанд гарна.
           </p>
           <Link className="btn btn--sm" href="/admin/niitlel/new">
             + Шинэ мэдээ

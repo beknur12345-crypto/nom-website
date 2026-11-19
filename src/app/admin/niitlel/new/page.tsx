@@ -13,7 +13,7 @@ export default async function NewArticle() {
     <div className={styles.admin}>
       <AdminBar active="articles" title="Шинэ мэдээ" />
       <main className={styles.body}>
-        <ArticleEditor />
+        <ArticleEditor uploadsEnabled={Boolean(process.env.BLOB_READ_WRITE_TOKEN)} />
       </main>
     </div>
   );

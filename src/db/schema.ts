@@ -1,4 +1,15 @@
-import { boolean, check, date, index, integer, pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+import {
+  boolean,
+  check,
+  date,
+  index,
+  integer,
+  jsonb,
+  pgEnum,
+  pgTable,
+  text,
+  timestamp,
+} from 'drizzle-orm/pg-core';
 import { sql } from 'drizzle-orm';
 import { ORDER_STATUSES } from '@/lib/labels';
 import { PAY_METHODS } from '@/lib/schemas';
@@ -40,7 +51,12 @@ export const inventory = pgTable(
   ],
 );
 
-/** Articles ("Нийтлэл") written in the admin dashboard and shown on the site. */
+/** A photo stored in Vercel Blob. The first photo of an article is its cover. */
+export type ArticleImage = { url: string; pathname: string; width: number; height: number };
+/** A PDF stored in Vercel Blob, with the name shown on the button. */
+export type ArticleFile = { url: string; pathname: string; name: string; size: number };
+
+/** Articles ("Мэдээ") written in the admin dashboard and shown on the site. */
 export const articles = pgTable('articles', {
   id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
   slug: text('slug').notNull().unique(),
@@ -51,6 +67,10 @@ export const articles = pgTable('articles', {
   /** Where it was first published (newspaper, site), optional. */
   sourceName: text('source_name'),
   sourceUrl: text('source_url'),
+  /** Photos, in display order; the first is the cover. */
+  images: jsonb('images').$type<ArticleImage[]>().notNull().default([]),
+  /** PDF attachments, in display order. */
+  files: jsonb('files').$type<ArticleFile[]>().notNull().default([]),
   publishedOn: date('published_on', { mode: 'string' }).notNull(),
   isPublished: boolean('is_published').notNull().default(false),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),

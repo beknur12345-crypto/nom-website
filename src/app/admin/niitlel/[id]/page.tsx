@@ -21,7 +21,7 @@ export default async function EditArticle({ params }: PageProps<'/admin/niitlel/
     <div className={styles.admin}>
       <AdminBar active="articles" title="Мэдээ засах" />
       <main className={styles.body}>
-        <ArticleEditor article={article} />
+        <ArticleEditor article={article} uploadsEnabled={Boolean(process.env.BLOB_READ_WRITE_TOKEN)} />
       </main>
     </div>
   );
