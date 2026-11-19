@@ -1,2 +1,2 @@
-ALTER TABLE "articles" ADD COLUMN "images" jsonb DEFAULT '[]'::jsonb NOT NULL;--> statement-breakpoint
-ALTER TABLE "articles" ADD COLUMN "files" jsonb DEFAULT '[]'::jsonb NOT NULL;
+ALTER TABLE "articles" ADD COLUMN IF NOT EXISTS "images" jsonb DEFAULT '[]'::jsonb NOT NULL;--> statement-breakpoint
+ALTER TABLE "articles" ADD COLUMN IF NOT EXISTS "files" jsonb DEFAULT '[]'::jsonb NOT NULL;
