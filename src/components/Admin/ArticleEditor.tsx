@@ -90,11 +90,11 @@ export function ArticleEditor({ article }: { article?: Article }) {
       </label>
 
       <label className="field">
-        <span className="field__label">Нийтлэлийн текст</span>
+        <span className="field__label">Мэдээний текст</span>
         <textarea className="input" name="body" rows={16} defaultValue={article?.body} {...a11y('body')} />
         <span className={styles.hint}>
           Догол мөрийн хооронд хоосон мөр үлдээнэ. Дэд гарчиг бол мөрийн эхэнд <code>## </code> бичнэ. Өөр
-          сайтад гарсан нийтлэл бол текстгүйгээр зөвхөн холбоосыг нь оруулж болно.
+          сайтад гарсан мэдээ бол текстгүйгээр зөвхөн холбоосыг нь оруулж болно.
         </span>
         {err('body')}
       </label>

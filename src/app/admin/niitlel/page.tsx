@@ -8,7 +8,7 @@ import styles from '@/components/Admin/Admin.module.css';
 import { formatDay } from '@/lib/article-text';
 import { getAllArticles } from '@/lib/articles';
 
-export const metadata: Metadata = { title: 'Нийтлэл | Самбар', robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: 'Мэдээ | Самбар', robots: { index: false, follow: false } };
 
 export default async function ArticlesAdmin({ searchParams }: PageProps<'/admin/niitlel'>) {
   const gate = await adminGate();
@@ -18,7 +18,7 @@ export default async function ArticlesAdmin({ searchParams }: PageProps<'/admin/
 
   return (
     <div className={styles.admin}>
-      <AdminBar active="articles" title="Нийтлэл" />
+      <AdminBar active="articles" title="Мэдээ" />
       <main className={styles.body}>
         {saved && (
           <p className={styles.flash} role="status">
@@ -27,18 +27,18 @@ export default async function ArticlesAdmin({ searchParams }: PageProps<'/admin/
         )}
         <div className={styles.toolbar}>
           <p>
-            Нийтлэгдсэн нийтлэлүүд нүүр хуудасны “Нийтлэл” хэсэг болон <Link href="/niitlel">/niitlel</Link>{' '}
+            Нийтлэгдсэн мэдээнүүд нүүр хуудасны “Мэдээ мэдээлэл” хэсэг болон <Link href="/niitlel">/niitlel</Link>{' '}
             хуудсанд гарна.
           </p>
           <Link className="btn btn--sm" href="/admin/niitlel/new">
-            + Шинэ нийтлэл
+            + Шинэ мэдээ
           </Link>
         </div>
 
         {list.length === 0 ? (
           <div className={styles.empty}>
-            <h2>Нийтлэл алга</h2>
-            <p>Эхний нийтлэлээ нэмэхэд сайт дээр “Нийтлэл” хэсэг автоматаар гарч ирнэ.</p>
+            <h2>Мэдээ алга</h2>
+            <p>Эхний мэдээгээ нэмэхэд сайт дээр “Мэдээ мэдээлэл” хэсэг автоматаар гарч ирнэ.</p>
           </div>
         ) : (
           <ul className={styles.articleList}>
@@ -62,12 +62,12 @@ export default async function ArticlesAdmin({ searchParams }: PageProps<'/admin/
                     <input type="hidden" name="id" value={a.id} />
                     <input type="hidden" name="publish" value={a.isPublished ? '0' : '1'} />
                     <Submit className={styles.linkButton}>
-                      {a.isPublished ? 'Нийтлэлээс авах' : 'Нийтлэх'}
+                      {a.isPublished ? 'Сайтаас авах' : 'Нийтлэх'}
                     </Submit>
                   </form>
                   <form action={deleteArticle}>
                     <input type="hidden" name="id" value={a.id} />
-                    <ConfirmSubmit message={`“${a.title}” нийтлэлийг устгах уу? Буцаах боломжгүй.`}>
+                    <ConfirmSubmit message={`“${a.title}” мэдээг устгах уу? Буцаах боломжгүй.`}>
                       Устгах
                     </ConfirmSubmit>
                   </form>

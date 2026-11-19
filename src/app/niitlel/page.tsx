@@ -11,8 +11,8 @@ import { navLinks } from '@/lib/nav';
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: `Нийтлэл | ${site.title}`,
-  description: `${site.author}: улс төр, стратегийн харилцааны тухай нийтлэлүүд.`,
+  title: `Мэдээ мэдээлэл | ${site.title}`,
+  description: `${site.author}: улс төр, стратегийн харилцааны тухай мэдээ.`,
   alternates: { canonical: '/niitlel' },
 };
 
@@ -25,10 +25,10 @@ export default async function ArticlesPage() {
         <Link className={styles.back} href="/">
           ← Буцах
         </Link>
-        <h1>Нийтлэл</h1>
+        <h1>Мэдээ мэдээлэл</h1>
         {list.length === 0 ? (
           <p className={styles.excerpt} style={{ marginTop: 24 }}>
-            Удахгүй нийтлэл нэмэгдэнэ.
+            Удахгүй мэдээ нэмэгдэнэ.
           </p>
         ) : (
           <div className={styles.list}>

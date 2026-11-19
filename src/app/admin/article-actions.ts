@@ -46,7 +46,7 @@ export async function saveArticle(_prev: ArticleState, fd: FormData): Promise<Ar
   if (!title) errors.title = 'Гарчгаа бичнэ үү';
   if (rawUrl && !sourceUrl) errors.sourceUrl = 'https:// -ээр эхэлсэн холбоос оруулна уу';
   if (!body && !sourceUrl)
-    errors.body = 'Нийтлэлийн текст эсвэл эх сурвалжийн холбоосын аль нэгийг оруулна уу';
+    errors.body = 'Мэдээний текст эсвэл эх сурвалжийн холбоосын аль нэгийг оруулна уу';
   if (!/^\d{4}-\d{2}-\d{2}$/.test(publishedOn)) errors.publishedOn = 'Огноогоо сонгоно уу';
   if (Object.keys(errors).length) return { errors };
 
@@ -63,7 +63,7 @@ export async function saveArticle(_prev: ArticleState, fd: FormData): Promise<Ar
   let slug: string;
   if (id) {
     const existing = await getArticle(id);
-    if (!existing) return { errors: { form: 'Нийтлэл олдсонгүй.' } };
+    if (!existing) return { errors: { form: 'Мэдээ олдсонгүй.' } };
     // Keep the address stable once created, so shared links keep working.
     slug = existing.slug;
     await db.update(articles).set(values).where(eq(articles.id, id));

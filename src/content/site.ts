@@ -21,6 +21,14 @@ export const site = {
   tagline: 'Улс төр, сонгуулийн технологи, стратеги болон манлайллын иж бүрэн гарын авлага',
   inspiredBy: 'Inspired by the book Vom Kriege',
 
+  /** Limited print run notice, shown under the "Ном захиалах" heading. */
+  printRunNote:
+    'Энэ гарын авлага ЗӨВХӨН албан хэрэгцээнд зориулагдсан тул цөөн хувиар хэвлэгдсэн. Номын дэлгүүр, номын санд тавигдахгүй болно. 300 хувь хэвлэгдсэн тул урьдчилсан захиалга авч, хүргэлтийн үйлчилгээгээр худалдан авагчид очно.',
+
+  /** Reward notice for reports of illegal copies, shown under printRunNote. */
+  piracyReward:
+    'Зохиогчийн эрхийг зөрчсөн, энэ гарын авлагыг хувилж олшруулсан талаарх мэдээллийг 1 сая төгрөгөөр үнэлэн худалдаж авна. Нууцлалыг чанд хадгална.',
+
   pricing: {
     unitPrice: 0, // e.g. 45000
     delivery: 0,
@@ -96,6 +104,6 @@ export const NAV_LINKS: readonly NavLink[] = [
   { href: '#book', label: 'Номын тухай' },
   { href: '#audience', label: 'Хэнд зориулав' },
   { href: '#author', label: 'Зохиогч' },
-  { href: '#articles', label: 'Нийтлэл' },
+  { href: '#articles', label: 'Мэдээ' },
   { href: '#contact', label: 'Холбоо барих' },
 ];

@@ -37,7 +37,7 @@ export function AdminBar({
           Захиалга
         </Link>
         <Link href="/admin/niitlel" aria-current={active === 'articles' ? 'page' : undefined}>
-          Нийтлэл
+          Мэдээ
         </Link>
         <Link href="/" target="_blank">
           Сайт үзэх ↗

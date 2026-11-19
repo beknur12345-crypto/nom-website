@@ -7,7 +7,7 @@ import styles from '@/components/Admin/Admin.module.css';
 import { getArticle } from '@/lib/articles';
 
 export const metadata: Metadata = {
-  title: 'Нийтлэл засах | Самбар',
+  title: 'Мэдээ засах | Самбар',
   robots: { index: false, follow: false },
 };
 
@@ -19,7 +19,7 @@ export default async function EditArticle({ params }: PageProps<'/admin/niitlel/
   if (!article) notFound();
   return (
     <div className={styles.admin}>
-      <AdminBar active="articles" title="Нийтлэл засах" />
+      <AdminBar active="articles" title="Мэдээ засах" />
       <main className={styles.body}>
         <ArticleEditor article={article} />
       </main>

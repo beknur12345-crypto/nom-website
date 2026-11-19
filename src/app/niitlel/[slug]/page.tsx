@@ -42,7 +42,7 @@ export default async function ArticlePage({ params }: PageProps<'/niitlel/[slug]
       <main id="main" className={styles.page}>
         <article className={styles.article}>
           <Link className={styles.back} href="/niitlel">
-            ← Бүх нийтлэл
+            ← Бүх мэдээ
           </Link>
           <p className={styles.meta}>
             <time dateTime={a.publishedOn}>{formatDay(a.publishedOn)}</time>
@@ -73,7 +73,7 @@ export default async function ArticlePage({ params }: PageProps<'/niitlel/[slug]
             </a>
           )}
 
-          <Share label="Нийтлэлийг share хийх" />
+          <Share label="Мэдээг share хийх" />
         </article>
       </main>
       <Footer share={false} />

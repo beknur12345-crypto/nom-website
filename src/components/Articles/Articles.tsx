@@ -9,9 +9,9 @@ export function Articles({ articles }: { articles: Article[] }) {
   return (
     <section className={styles.section} id="articles" aria-labelledby="articles-title">
       <div className={styles.head}>
-        <h2 id="articles-title">Нийтлэл</h2>
+        <h2 id="articles-title">Мэдээ мэдээлэл</h2>
         <Link className={styles.all} href="/niitlel">
-          Бүх нийтлэл
+          Бүх мэдээ
         </Link>
       </div>
       <div className={styles.grid}>

@@ -15,11 +15,25 @@
 .intro h2 {
   font-size: 70px;
 }
+.printNote {
+  margin-top: 24px;
+  max-width: 400px;
+  font-size: 17px;
+  line-height: 1.55;
+}
+.printNote + .printNote {
+  margin-top: 14px;
+}
+.printNote strong {
+  font-weight: 700;
+}
+/* In the flow under the note; the negative bottom margin lets it bleed off the bottom edge. */
 .cover {
-  position: absolute;
-  left: var(--pad-x);
-  top: 290px;
+  position: relative;
+  display: block;
+  margin: 48px 0 -220px;
   width: 372px;
+  max-width: 100%;
   transform: rotate(-7deg);
   filter: drop-shadow(-10px 14px 14px rgba(0, 0, 0, 0.45));
 }
