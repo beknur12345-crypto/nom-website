@@ -120,3 +120,6 @@
   font-weight: 700;
   color: var(--red);
 }
+.list .cover {
+  max-width: 480px;
+}

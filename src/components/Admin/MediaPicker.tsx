@@ -1,6 +1,7 @@
 'use client';
 
 import { upload } from '@vercel/blob/client';
+import Image from 'next/image';
 import { useId, useRef, useState } from 'react';
 import type { ArticleFile, ArticleImage } from '@/db/schema';
 import { MEDIA, MEDIA_PREFIX, formatSize, type MediaKind } from '@/lib/media';
@@ -140,8 +141,7 @@ export function MediaPicker({
         <ul className={styles.thumbs}>
           {images.map((img, i) => (
             <li key={img.url} className={styles.thumb}>
-              {/* eslint-disable-next-line @next/next/no-img-element -- admin preview of a just-uploaded file */}
-              <img src={img.url} alt="" width={img.width} height={img.height} />
+              <Image src={img.url} alt="" width={img.width} height={img.height} sizes="160px" />
               {i === 0 ? (
                 <span className={styles.coverTag}>Нүүр зураг</span>
               ) : (
