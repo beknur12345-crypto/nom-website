@@ -119,7 +119,7 @@ export function ArticleEditor({ article, uploadsEnabled }: { article?: Article; 
           </Submit>
         )}
         {uploading && <span className={styles.hint}>Файл хуулж дуустал хүлээнэ үү…</span>}
-        <Link className={styles.clear} href="/admin/niitlel">
+        <Link className={styles.clear} href="/admin/medee">
           Болих
         </Link>
       </div>

@@ -36,7 +36,7 @@ export function AdminBar({
         <Link href="/admin" aria-current={active === 'orders' ? 'page' : undefined}>
           Захиалга
         </Link>
-        <Link href="/admin/niitlel" aria-current={active === 'articles' ? 'page' : undefined}>
+        <Link href="/admin/medee" aria-current={active === 'articles' ? 'page' : undefined}>
           Мэдээ
         </Link>
         <Link href="/" target="_blank">

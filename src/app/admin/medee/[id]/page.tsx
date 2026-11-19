@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default async function EditArticle({ params }: PageProps<'/admin/niitlel/[id]'>) {
+export default async function EditArticle({ params }: PageProps<'/admin/medee/[id]'>) {
   const gate = await adminGate();
   if (gate) return gate;
   const id = Number((await params).id);

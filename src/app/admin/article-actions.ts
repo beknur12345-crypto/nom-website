@@ -36,7 +36,7 @@ function refreshPublic(slug?: string) {
   revalidatePath('/niitlel');
   if (slug) revalidatePath(`/niitlel/${slug}`);
   revalidatePath('/sitemap.xml');
-  revalidatePath('/admin/niitlel');
+  revalidatePath('/admin/medee');
 }
 
 export async function saveArticle(_prev: ArticleState, fd: FormData): Promise<ArticleState> {
@@ -92,7 +92,7 @@ export async function saveArticle(_prev: ArticleState, fd: FormData): Promise<Ar
     await db.insert(articles).values({ ...values, slug });
   }
   refreshPublic(slug);
-  redirect(`/admin/niitlel?saved=${publish ? 'published' : 'draft'}`);
+  redirect(`/admin/medee?saved=${publish ? 'published' : 'draft'}`);
 }
 
 export async function setPublished(fd: FormData): Promise<void> {

@@ -42,6 +42,10 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: '*.public.blob.vercel-storage.com', pathname: '/medee/**' },
     ],
   },
+  async redirects() {
+    // The admin news pages moved from /admin/niitlel to /admin/medee.
+    return [{ source: '/admin/niitlel/:path*', destination: '/admin/medee/:path*', permanent: true }];
+  },
   async headers() {
     return [{ source: '/:path*', headers: securityHeaders }];
   },

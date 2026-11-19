@@ -10,7 +10,7 @@ import { getAllArticles } from '@/lib/articles';
 
 export const metadata: Metadata = { title: 'Мэдээ | Самбар', robots: { index: false, follow: false } };
 
-export default async function ArticlesAdmin({ searchParams }: PageProps<'/admin/niitlel'>) {
+export default async function ArticlesAdmin({ searchParams }: PageProps<'/admin/medee'>) {
   const gate = await adminGate();
   if (gate) return gate;
   const { saved } = await searchParams;
@@ -30,7 +30,7 @@ export default async function ArticlesAdmin({ searchParams }: PageProps<'/admin/
             Нийтлэгдсэн мэдээнүүд нүүр хуудасны “Мэдээ мэдээлэл” хэсэг болон{' '}
             <Link href="/niitlel">/niitlel</Link> хуудсанд гарна.
           </p>
-          <Link className="btn btn--sm" href="/admin/niitlel/new">
+          <Link className="btn btn--sm" href="/admin/medee/new">
             + Шинэ мэдээ
           </Link>
         </div>
@@ -52,7 +52,7 @@ export default async function ArticlesAdmin({ searchParams }: PageProps<'/admin/
                   <h3 className={styles.name}>{a.title}</h3>
                 </div>
                 <div className={styles.rowActions}>
-                  <Link href={`/admin/niitlel/${a.id}`}>Засах</Link>
+                  <Link href={`/admin/medee/${a.id}`}>Засах</Link>
                   {a.isPublished && (
                     <Link href={`/niitlel/${a.slug}`} target="_blank">
                       Үзэх ↗
