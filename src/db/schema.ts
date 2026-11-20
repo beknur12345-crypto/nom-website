@@ -79,6 +79,28 @@ export const articles = pgTable('articles', {
 
 export type Article = typeof articles.$inferSelect;
 
+/**
+ * One row per page view on the public site, for the admin "Зочид" tab.
+ * Holds no IP or personal data: `visitor` is a hash that changes every day,
+ * so it counts unique visitors per day but cannot follow anyone over time.
+ */
+export const visits = pgTable(
+  'visits',
+  {
+    id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
+    at: timestamp('at', { withTimezone: true }).defaultNow().notNull(),
+    path: text('path').notNull(),
+    /** facebook, google, instagram, telegram, direct, or another site's host name. */
+    source: text('source').notNull(),
+    /** Two-letter country code from Vercel, or null when unknown. */
+    country: text('country'),
+    /** mobile, tablet or desktop. */
+    device: text('device').notNull(),
+    visitor: text('visitor').notNull(),
+  },
+  (t) => [index('visits_at_idx').on(t.at)],
+);
+
 /** Log of rate-limited events (failed logins, orders, messages), shared by every server instance. */
 export const rateEvents = pgTable(
   'rate_events',

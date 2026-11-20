@@ -9,7 +9,7 @@ export function AdminBar({
   title,
   refresh = false,
 }: {
-  active: 'orders' | 'articles';
+  active: 'orders' | 'articles' | 'visits';
   title: string;
   refresh?: boolean;
 }) {
@@ -38,6 +38,9 @@ export function AdminBar({
         </Link>
         <Link href="/admin/medee" aria-current={active === 'articles' ? 'page' : undefined}>
           Мэдээ
+        </Link>
+        <Link href="/admin/zochid" aria-current={active === 'visits' ? 'page' : undefined}>
+          Зочид
         </Link>
         <Link href="/" target="_blank">
           Сайт үзэх ↗

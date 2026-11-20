@@ -422,10 +422,106 @@
     font-size: 34px;
   }
 }
+@media (min-width: 760px) {
+  .stats.visitStats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .visitGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
 @media (min-width: 1200px) {
   .list {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+}
+
+/* Visitors ("Зочид") */
+.stat small {
+  font-size: 13px;
+  opacity: 0.75;
+}
+.visitBox {
+  background: var(--card);
+  border: 2px solid var(--ink);
+  padding: 14px 16px 16px;
+  min-width: 0;
+}
+.visitBox h2 {
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+.visitEmpty {
+  font-size: 14px;
+  opacity: 0.7;
+}
+.chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 140px;
+  border-bottom: 2px solid var(--ink);
+}
+.chartCol {
+  flex: 1 1 0;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  min-width: 0;
+}
+.chartBar {
+  width: 100%;
+  background: var(--navy);
+  min-height: 2px;
+}
+.chartBar[data-empty] {
+  background: var(--ink);
+  opacity: 0.2;
+}
+.chartCol:last-child .chartBar:not([data-empty]) {
+  background: var(--red);
+}
+.chartAxis {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  opacity: 0.7;
+  margin-top: 6px;
+}
+.visitGrid {
+  display: grid;
+  gap: 14px;
+}
+.barList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 6px;
+}
+.barList li {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 10px;
+  font-size: 14px;
+  isolation: isolate;
+}
+.barFill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--cream);
+  z-index: -1;
+}
+.barLabel {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.visitNote {
+  font-size: 13px;
+  opacity: 0.75;
+  max-width: 640px;
 }
 
 /* Section switcher inside the top bar */
