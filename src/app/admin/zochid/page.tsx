@@ -8,16 +8,31 @@ export const metadata: Metadata = { title: 'Зочид | Самбар', robots: 
 
 const nf = new Intl.NumberFormat('en-US');
 
-/** "11.20" from "2026-11-20". */
-const shortDay = (d: string) => `${Number(d.slice(5, 7))}.${Number(d.slice(8, 10))}`;
+/** "11 сарын 20" from "2026-11-20". */
+const niceDay = (d: string) => `${Number(d.slice(5, 7))} сарын ${Number(d.slice(8, 10))}`;
 
-function BarList({ title, rows, unit }: { title: string; rows: Row[]; unit: string }) {
+/** A question with a short ranked list: "Facebook — 12 хүн (60%)". */
+function BarList({
+  title,
+  hint,
+  rows,
+  unit,
+  percent = true,
+}: {
+  title: string;
+  hint: string;
+  rows: Row[];
+  unit: string;
+  percent?: boolean;
+}) {
   const max = Math.max(1, ...rows.map((r) => r.value));
+  const total = rows.reduce((sum, r) => sum + r.value, 0);
   return (
     <section className={styles.visitBox} aria-label={title}>
       <h2>{title}</h2>
+      <p className={styles.visitHint}>{hint}</p>
       {rows.length === 0 ? (
-        <p className={styles.visitEmpty}>Мэдээлэл алга</p>
+        <p className={styles.visitEmpty}>Одоогоор мэдээлэл алга.</p>
       ) : (
         <ul className={styles.barList}>
           {rows.map((r) => (
@@ -25,8 +40,10 @@ function BarList({ title, rows, unit }: { title: string; rows: Row[]; unit: stri
               <span className={styles.barFill} style={{ width: `${(r.value / max) * 100}%` }} aria-hidden />
               <span className={styles.barLabel}>{r.label}</span>
               <b>
-                {nf.format(r.value)}
-                <span className="sr-only"> {unit}</span>
+                {nf.format(r.value)} {unit}
+                {percent && total > 0 && (
+                  <span className={styles.barPct}> · {Math.round((r.value / total) * 100)}%</span>
+                )}
               </b>
             </li>
           ))}
@@ -41,6 +58,8 @@ export default async function VisitsAdmin() {
   if (gate) return gate;
   const stats = await getVisitStats();
 
+  const busiest = stats?.daily.reduce((a, b) => (b.visitors > a.visitors ? b : a));
+
   return (
     <div className={styles.admin}>
       <AdminBar active="visits" title="Зочид" refresh />
@@ -49,43 +68,46 @@ export default async function VisitsAdmin() {
           <p className={styles.notice}>Өгөгдлийн сан холбогдоогүй байна (DATABASE_URL).</p>
         ) : (
           <>
-            <section className={`${styles.stats} ${styles.visitStats}`} aria-label="Тойм">
+            <p className={styles.visitIntro}>
+              Сайтад хэдэн хүн орсныг, тэд хаанаас ирснийг эндээс харна. Нэг хүн нэг өдөр хэд ч орсон{' '}
+              <b>1 хүн</b> гэж тоологдоно.
+            </p>
+
+            <section className={`${styles.stats} ${styles.visitStats}`} aria-label="Хэдэн хүн орсон бэ">
               <div className={styles.stat}>
-                <span>Өнөөдөр</span>
-                <b>{nf.format(stats.today.visitors)}</b>
-                <small>{nf.format(stats.today.views)} хуудас үзсэн</small>
+                <span>Өнөөдөр орсон</span>
+                <b>{nf.format(stats.today.visitors)} хүн</b>
               </div>
               <div className={styles.stat}>
-                <span>Сүүлийн 7 хоног</span>
-                <b>{nf.format(stats.week.visitors)}</b>
-                <small>{nf.format(stats.week.views)} хуудас үзсэн</small>
+                <span>Сүүлийн 7 хоногт</span>
+                <b>{nf.format(stats.week.visitors)} хүн</b>
               </div>
               <div className={styles.stat}>
-                <span>Сүүлийн {DAYS} хоног</span>
-                <b>{nf.format(stats.month.visitors)}</b>
-                <small>{nf.format(stats.month.views)} хуудас үзсэн</small>
+                <span>Сүүлийн {DAYS} хоногт</span>
+                <b>{nf.format(stats.month.visitors)} хүн</b>
               </div>
               <div className={styles.stat}>
-                <span>Захиалга ({DAYS} хоног)</span>
+                <span>Сүүлийн {DAYS} хоногт ирсэн захиалга</span>
                 <b>{nf.format(stats.monthOrders)}</b>
-                <small>
-                  {stats.month.visitors > 0
-                    ? `100 зочин тутмаас ${((stats.monthOrders / stats.month.visitors) * 100).toFixed(1)} захиалга`
-                    : '—'}
-                </small>
               </div>
             </section>
 
-            <section className={styles.visitBox} aria-label={`Өдөр бүрийн зочид, сүүлийн ${DAYS} хоног`}>
-              <h2>Өдөр бүрийн зочид</h2>
+            <section
+              className={styles.visitBox}
+              aria-label={`Өдөр бүр хэдэн хүн орсон, сүүлийн ${DAYS} хоног`}
+            >
+              <h2>Өдөр бүр хэдэн хүн орсон бэ?</h2>
+              <p className={styles.visitHint}>
+                Багана бүр нэг өдөр. Өндөр байх тусам олон хүн орсон. Улаан нь өнөөдөр.
+              </p>
               <div className={styles.chart}>
                 {stats.daily.map((d) => {
-                  const max = Math.max(1, ...stats.daily.map((x) => x.visitors));
+                  const max = Math.max(1, busiest?.visitors ?? 0);
                   return (
                     <div
                       key={d.day}
                       className={styles.chartCol}
-                      title={`${shortDay(d.day)}: ${d.visitors} зочин, ${d.views} хуудас`}
+                      title={`${niceDay(d.day)}: ${d.visitors} хүн`}
                     >
                       <span
                         className={styles.chartBar}
@@ -93,28 +115,54 @@ export default async function VisitsAdmin() {
                         data-empty={d.visitors === 0 || undefined}
                       />
                       <span className="sr-only">
-                        {shortDay(d.day)}: {d.visitors} зочин
+                        {niceDay(d.day)}: {d.visitors} хүн
                       </span>
                     </div>
                   );
                 })}
               </div>
               <div className={styles.chartAxis} aria-hidden>
-                <span>{shortDay(stats.daily[0]!.day)}</span>
+                <span>{niceDay(stats.daily[0]!.day)}</span>
                 <span>Өнөөдөр</span>
               </div>
+              {busiest && busiest.visitors > 0 && (
+                <p className={styles.visitHint}>
+                  Хамгийн олон хүн орсон өдөр: <b>{niceDay(busiest.day)}</b>, {nf.format(busiest.visitors)}{' '}
+                  хүн.
+                </p>
+              )}
             </section>
 
             <div className={styles.visitGrid}>
-              <BarList title="Хаанаас ирсэн" rows={stats.sources} unit="зочин" />
-              <BarList title="Үзсэн хуудас" rows={stats.pages} unit="удаа" />
-              <BarList title="Улс" rows={stats.countries} unit="зочин" />
-              <BarList title="Төхөөрөмж" rows={stats.devices} unit="зочин" />
+              <BarList
+                title="Хаанаас орж ирсэн бэ?"
+                hint={`Сүүлийн ${DAYS} хоногт, хүмүүс ямар холбоосоор дамжиж сайтад орсон.`}
+                rows={stats.sources}
+                unit="хүн"
+              />
+              <BarList
+                title="Аль хуудсыг үзсэн бэ?"
+                hint={`Сүүлийн ${DAYS} хоногт хуудас бүрийг нийт хэдэн удаа нээсэн.`}
+                rows={stats.pages}
+                unit="удаа"
+                percent={false}
+              />
+              <BarList
+                title="Аль улсаас орсон бэ?"
+                hint={`Сүүлийн ${DAYS} хоногт.`}
+                rows={stats.countries}
+                unit="хүн"
+              />
+              <BarList
+                title="Утсаар уу, компьютероор уу?"
+                hint={`Сүүлийн ${DAYS} хоногт.`}
+                rows={stats.devices}
+                unit="хүн"
+              />
             </div>
 
             <p className={styles.visitNote}>
-              Нэг хүн нэг өдөр хэд ч орсон 1 зочин гэж тоологдоно. Зочдын нэр, утас, IP хаяг хадгалагдахгүй.
-              Хайлтын систем, Facebook-ийн холбоос шалгагч зэрэг роботыг тоолохгүй.
+              Зочдын нэр, утас, IP хаяг хадгалагдахгүй. Таны өөрийн самбарт орсныг болон роботуудыг тоолохгүй.
             </p>
           </>
         )}

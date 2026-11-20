@@ -37,8 +37,8 @@ const SOURCE_LABELS: Record<string, string> = {
   telegram: 'Telegram',
   google: 'Google',
   youtube: 'YouTube',
-  search: 'Бусад хайлтын систем',
-  direct: 'Шууд (холбоос хуулж, хаяг бичиж)',
+  search: 'Бусад хайлт (Bing, Yandex…)',
+  direct: 'Хаягийг шууд бичиж эсвэл хуулсан холбоосоор',
 };
 const DEVICE_LABELS: Record<string, string> = { mobile: 'Утас', tablet: 'Таблет', desktop: 'Компьютер' };
 
