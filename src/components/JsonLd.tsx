@@ -14,6 +14,7 @@ export function JsonLd() {
     description: site.description,
     image: new URL(cover.src, site.url).toString(),
     url: site.url,
+    sameAs: [site.facebook.page],
     ...(site.book.pages ? { numberOfPages: site.book.pages } : {}),
     ...(isPriceSet()
       ? {

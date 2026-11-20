@@ -6,6 +6,8 @@ import { PROVINCES } from './provinces';
 
 export const PAY_METHODS = ['qr', 'bank', 'card'] as const;
 export type PayMethod = (typeof PAY_METHODS)[number];
+/** Methods a new order may use. PAY_METHODS keeps the old values for the DB enum and past orders. */
+export const ORDER_PAY_METHODS = ['bank'] as const satisfies readonly PayMethod[];
 
 const text = (message: string, max = 200) =>
   z
@@ -25,7 +27,7 @@ export const orderSchema = z.object({
   district: text('Дүүрэг, сумаа бичнэ үү', 120),
   address: text('Хаягаа бичнэ үү', 300),
   quantity: z.pipe(z.coerce.number(), z.int().check(z.gte(MIN_QTY), z.lte(MAX_QTY))),
-  pay: z.enum(PAY_METHODS, { error: 'Төлбөрийн хэлбэрээ сонгоно уу' }),
+  pay: z.enum(ORDER_PAY_METHODS, { error: 'Төлбөрийн хэлбэрээ сонгоно уу' }),
 });
 export type OrderInput = z.infer<typeof orderSchema>;
 

@@ -16,13 +16,15 @@ describe('email templates', () => {
         district: 'СБД',
         address: 'Хаяг',
         quantity: 1,
-        pay: 'qr',
+        pay: 'bank',
       },
-      calculateTotals(1, { unitPrice: 45000, delivery: 0 }),
+      calculateTotals(1, { unitPrice: 45000, delivery: 0, depositPercent: 30 }),
       '№1001',
     );
     expect(html).not.toContain('<img');
     expect(html).toContain('₮45,000');
+    expect(html).toContain('₮13,500'); // 30% deposit
+    expect(html).toContain('₮31,500'); // due on delivery
     expect(subject).toContain('№1001');
   });
 });

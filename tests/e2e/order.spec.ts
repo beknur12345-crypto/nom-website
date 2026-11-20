@@ -42,9 +42,9 @@ test.describe('order form', () => {
     await form.getByLabel('Хот / аймаг').selectOption('Дархан-Уул');
     await form.getByLabel('Дүүрэг / сум').fill('Дархан сум');
     await form.getByLabel('Дэлгэрэнгүй хаяг').fill('5-р баг, 12 тоот');
-    await form.getByText('Дансаар').click();
-    // Until a real price and QR are set, payment details are not shown.
-    await expect(form.getByText('Төлбөр хийх хэлбэрээ сонгоно уу')).toBeVisible();
+    // Bank transfer is the only payment method; its details are always shown.
+    await expect(form.getByText('Хаан банк')).toBeVisible();
+    await expect(form.getByText('Картаар')).toHaveCount(0);
     await form.getByRole('button', { name: 'Захиалга илгээх' }).click();
 
     const status = page.getByRole('status').filter({ hasText: 'Туршилтын горим' });

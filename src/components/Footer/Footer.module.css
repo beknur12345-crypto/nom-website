@@ -11,6 +11,16 @@
   font-size: 13px;
   align-items: center;
 }
+.social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+}
+.social a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 .logo {
   flex-basis: 100%;
   width: min(300px, 100%);

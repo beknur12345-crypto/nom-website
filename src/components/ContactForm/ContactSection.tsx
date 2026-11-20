@@ -23,6 +23,9 @@ export function ContactSection() {
           {site.email}
         </a>
       )}
+      <a className={styles.mail} href={site.facebook.messenger} target="_blank" rel="noopener">
+        Messenger-ээр асуух
+      </a>
 
       {result.status === 'success' ? (
         <div className={styles.done} role="status">

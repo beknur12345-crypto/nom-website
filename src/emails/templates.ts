@@ -1,3 +1,4 @@
+import { site } from '@/content/site';
 import { formatMNT } from '@/lib/money';
 import { PAY_LABELS } from '@/lib/labels';
 import type { ContactInput, OrderInput } from '@/lib/schemas';
@@ -34,6 +35,8 @@ export function orderEmail(order: OrderInput, totals: Totals, reference: string)
     ['Номын үнэ', formatMNT(totals.books)],
     ['Хүргэлт', formatMNT(totals.delivery)],
     ['Нийт', formatMNT(totals.total)],
+    [`Урьдчилгаа (${site.pricing.depositPercent}%)`, formatMNT(totals.deposit)],
+    ['Хүргэлтээр төлөх', formatMNT(totals.balance)],
   ];
   const html = `<h2 style="font:700 20px Arial,sans-serif">Шинэ захиалга ирлээ</h2>${table(rows)}`;
   const text = rows.map(([k, v]) => `${k}: ${v}`).join('\n');
@@ -51,7 +54,12 @@ export function orderTelegram(order: OrderInput, totals: Totals, reference: stri
     `📍 ${e(`${order.city}, ${order.district}, ${order.address}`)}`,
     `📚 ${totals.quantity} ширхэг · ${PAY_LABELS[order.pay]}`,
   ];
-  if (totals.total > 0) lines.push(`💰 <b>${formatMNT(totals.total)}</b>`);
+  if (totals.total > 0) {
+    lines.push(
+      `💰 <b>${formatMNT(totals.total)}</b>`,
+      `💳 Урьдчилгаа ${site.pricing.depositPercent}%: <b>${formatMNT(totals.deposit)}</b> · Хүргэлтээр: ${formatMNT(totals.balance)}`,
+    );
+  }
   return lines.join('\n');
 }
 

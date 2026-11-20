@@ -7,7 +7,8 @@ export type OrderStatus = (typeof ORDER_STATUSES)[number];
 
 export const STATUS_LABELS: Record<OrderStatus, string> = {
   new: 'Шинэ',
-  paid: 'Төлсөн',
+  /** The up-front deposit is in; the rest is collected on delivery. */
+  paid: 'Урьдчилгаа төлсөн',
   shipped: 'Илгээсэн',
   delivered: 'Хүргэсэн',
   cancelled: 'Цуцалсан',

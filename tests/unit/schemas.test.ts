@@ -8,7 +8,7 @@ const validOrder = {
   district: 'Сүхбаатар дүүрэг',
   address: '1-р хороо, 5-р байр, 12 тоот',
   quantity: '2',
-  pay: 'qr',
+  pay: 'bank',
 };
 
 describe('orderSchema', () => {
@@ -24,6 +24,7 @@ describe('orderSchema', () => {
     ['name', '   ', 'Нэрээ бичнэ үү'],
     ['address', '', 'Хаягаа бичнэ үү'],
     ['city', 'Москва', 'Хот, аймгаа сонгоно уу'],
+    ['pay', 'card', 'Төлбөрийн хэлбэрээ сонгоно уу'],
   ])('rejects bad %s (%j) with a Mongolian message', (field, value, message) => {
     const r = orderSchema.safeParse({ ...validOrder, [field]: value });
     expect(r.success).toBe(false);

@@ -17,6 +17,11 @@ export const site = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ulsturiintulaan.com',
   /** Public contact address. Leave null until the mailbox can receive mail (the domain has no MX record yet). */
   email: null as string | null, // e.g. 'info@ulsturiintulaan.com'
+  /** The book's Facebook Page and its Messenger chat. Switch to facebook.com/<username> once one is set. */
+  facebook: {
+    page: 'https://www.facebook.com/profile.php?id=61596374867969',
+    messenger: 'https://m.me/61596374867969',
+  },
   description: 'Улс төр, сонгуулийн технологи, стратеги болон манлайллын иж бүрэн гарын авлага.',
   tagline: 'Улс төр, сонгуулийн технологи, стратеги болон манлайллын иж бүрэн гарын авлага',
   inspiredBy: 'Inspired by the book Vom Kriege',
@@ -32,6 +37,8 @@ export const site = {
   pricing: {
     unitPrice: 0, // e.g. 45000
     delivery: 0,
+    /** Share of the total paid by bank transfer when ordering; the rest is paid on delivery. */
+    depositPercent: 30,
   },
 
   book: {
@@ -82,16 +89,14 @@ export const site = {
     },
   ] as const,
 
+  /** Orders are paid by bank transfer only: the deposit up front, the rest on delivery. */
   payment: {
-    /** Replace public/qr-sample.svg with the real QR and set isSample to false. */
-    qr: { src: '/qr-sample.svg', isSample: true },
     bank: {
-      bank: 'Банкны нэр',
-      account: '0000 0000 00',
-      holder: 'Дансны нэр',
+      bank: 'Хаан банк',
+      account: '26 0000500 5134352807',
+      holder: 'МӨНГӨНЧИМЭГ ГАНСҮХ',
       reference: 'Таны утасны дугаар',
     } satisfies BankDetails,
-    cardEnabled: false,
   },
 } as const;
 

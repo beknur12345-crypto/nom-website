@@ -1,14 +1,12 @@
 'use client';
 
-import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { submitOrder } from '@/app/actions';
 import { site } from '@/content/site';
-import { PAY_LABELS } from '@/lib/labels';
 import { formatMNT } from '@/lib/money';
 import { MAX_QTY, MIN_QTY, calculateTotals, isPriceSet } from '@/lib/pricing';
 import { PROVINCES } from '@/lib/provinces';
-import { ORDER_FIELDS, PAY_METHODS, orderSchema, type PayMethod } from '@/lib/schemas';
+import { ORDER_FIELDS, orderSchema } from '@/lib/schemas';
 import { Field } from '@/components/form/Field';
 import { Honeypot } from '@/components/form/Honeypot';
 import { Share } from '@/components/Share/Share';
@@ -24,13 +22,12 @@ export function OrderForm({ stock }: { stock: number | null }) {
   );
   const [qty, setQty] = useState(MIN_QTY);
   const maxQty = stock === null ? MAX_QTY : Math.max(MIN_QTY, Math.min(MAX_QTY, stock));
-  const [pay, setPay] = useState<PayMethod>('qr');
   const doneRef = useRef<HTMLDivElement>(null);
 
   const totals = calculateTotals(qty);
   const priced = isPriceSet();
-  /** Payment details are shown only once the price and real QR/bank details are set in content/site.ts. */
-  const paymentReady = priced && !site.payment.qr.isSample;
+  const { bank } = site.payment;
+  const pct = site.pricing.depositPercent;
 
   const done = result.status === 'success';
   useEffect(() => {
@@ -40,7 +37,6 @@ export function OrderForm({ stock }: { stock: number | null }) {
   const startOver = () => {
     reset();
     setQty(MIN_QTY);
-    setPay('qr');
   };
 
   if (stock === 0 && !done) {
@@ -62,6 +58,14 @@ export function OrderForm({ stock }: { stock: number | null }) {
             ? `Таны захиалгын дугаар ${result.reference ?? ''}. Бид тантай удахгүй холбогдоно.`
             : 'Захиалга илгээгдээгүй. Захиалгын систем холбогдсоны дараа энэ хэсэг ажиллана.'}
         </p>
+        {live && (
+          <p>
+            Захиалгаа баталгаажуулахын тулд{' '}
+            {priced ? `${formatMNT(totals.deposit)} (${pct}%)` : `нийт дүнгийн ${pct}%`} урьдчилгааг{' '}
+            {bank.bank}, {bank.account} ({bank.holder}) дансанд шилжүүлж, гүйлгээний утгад утасны дугаараа
+            бичнэ үү. Үлдэгдлийг номоо хүлээн авахдаа төлнө.
+          </p>
+        )}
         <button className="btn" type="button" onClick={startOver}>
           Шинэ захиалга
         </button>
@@ -161,66 +165,36 @@ export function OrderForm({ stock }: { stock: number | null }) {
         <h3 className={styles.step}>
           <b>2</b>Төлбөр
         </h3>
-        <fieldset className={styles.tabs}>
-          <legend className="sr-only">Төлбөрийн хэлбэр</legend>
-          {PAY_METHODS.map((m) => (
-            <label key={m}>
-              <input type="radio" name="pay" value={m} checked={pay === m} onChange={() => setPay(m)} />
-              <span>{PAY_LABELS[m]}</span>
-            </label>
-          ))}
-        </fieldset>
-
-        <div className={paymentReady ? styles.panel : styles.pending}>
-          {!paymentReady && (
-            <p>
-              Төлбөр хийх хэлбэрээ сонгоно уу. Захиалгыг тань хүлээн авмагц бид утсаар холбогдож үнэ,
-              төлбөрийн мэдээллийг хүргэнэ.
-            </p>
-          )}
-          {paymentReady && pay === 'qr' && (
-            <>
-              <div className={styles.qr}>
-                <Image
-                  src={site.payment.qr.src}
-                  width={200}
-                  height={200}
-                  alt={site.payment.qr.isSample ? 'Жишээ QR код' : 'Төлбөрийн QR код'}
-                  unoptimized
-                />
-              </div>
-              {site.payment.qr.isSample && (
-                <small className={styles.sample}>Жишээ код. Төлбөр авахгүй.</small>
-              )}
-              <p>Банкны аппликейшнээр уншуулна уу</p>
-            </>
-          )}
-          {paymentReady && pay === 'bank' && (
-            <dl className={styles.bank}>
-              <div>
-                <dt>Банк</dt>
-                <dd>{site.payment.bank.bank}</dd>
-              </div>
-              <div>
-                <dt>Данс</dt>
-                <dd>{site.payment.bank.account}</dd>
-              </div>
-              <div>
-                <dt>Хүлээн авагч</dt>
-                <dd>{site.payment.bank.holder}</dd>
-              </div>
-              <div>
-                <dt>Гүйлгээний утга</dt>
-                <dd>{site.payment.bank.reference}</dd>
-              </div>
-            </dl>
-          )}
-          {paymentReady && pay === 'card' && (
-            <p className={styles.note}>Картын төлбөрийн холболт хийгдсэний дараа энэ хэсэг идэвхжинэ.</p>
+        <input type="hidden" name="pay" value="bank" />
+        <div className={styles.panel}>
+          <p>
+            Захиалга өгөхдөө нийт дүнгийн <b>{pct}%</b>-ийг урьдчилж дараах дансанд шилжүүлнэ. Үлдэгдэл{' '}
+            {100 - pct}%-ийг номоо хүлээн авахдаа төлнө.
+          </p>
+          <dl className={styles.bank}>
+            <div>
+              <dt>Банк</dt>
+              <dd>{bank.bank}</dd>
+            </div>
+            <div>
+              <dt>Данс</dt>
+              <dd>{bank.account}</dd>
+            </div>
+            <div>
+              <dt>Хүлээн авагч</dt>
+              <dd>{bank.holder}</dd>
+            </div>
+            <div>
+              <dt>Гүйлгээний утга</dt>
+              <dd>{bank.reference}</dd>
+            </div>
+          </dl>
+          {!priced && (
+            <p className={styles.note}>Үнийн мэдээллийг захиалга хүлээн авмагц утсаар хэлж өгнө.</p>
           )}
         </div>
 
-        {paymentReady && (
+        {priced && (
           <div className={styles.summary}>
             <div>
               <span>Ном × {totals.quantity}</span>
@@ -230,9 +204,17 @@ export function OrderForm({ stock }: { stock: number | null }) {
               <span>Хүргэлт</span>
               <span>{formatMNT(totals.delivery)}</span>
             </div>
-            <div className={styles.total}>
+            <div>
               <span>Нийт дүн</span>
               <span>{formatMNT(totals.total)}</span>
+            </div>
+            <div className={styles.total}>
+              <span>Одоо төлөх ({pct}%)</span>
+              <span>{formatMNT(totals.deposit)}</span>
+            </div>
+            <div>
+              <span>Хүргэлтээр төлөх</span>
+              <span>{formatMNT(totals.balance)}</span>
             </div>
           </div>
         )}

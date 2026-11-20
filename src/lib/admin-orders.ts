@@ -3,14 +3,15 @@ import { and, desc, eq, ilike, or, sql, type SQL } from 'drizzle-orm';
 import { getDb } from '@/db';
 import { orders, type Order } from '@/db/schema';
 import { ORDER_STATUSES, type OrderStatus } from './labels';
+import { splitPayment } from './pricing';
 
 export const isStatus = (v: unknown): v is OrderStatus => ORDER_STATUSES.includes(v as OrderStatus);
 
 export interface Stats {
   counts: Record<OrderStatus | 'all', number>;
-  /** Unpaid orders' totals: money still to collect. */
+  /** Money still to collect: new orders in full, plus the on-delivery balance of paid and shipped ones. */
   toCollect: number;
-  /** Paid, shipped or delivered. */
+  /** Money received: deposits of paid and shipped orders, plus delivered orders in full. */
   revenue: number;
   booksSold: number;
 }
@@ -36,7 +37,13 @@ export async function getStats(): Promise<Stats | null> {
     counts[r.status] = r.n;
     counts.all += r.n;
     if (r.status === 'new') toCollect += r.total;
-    if (r.status === 'paid' || r.status === 'shipped' || r.status === 'delivered') {
+    if (r.status === 'paid' || r.status === 'shipped') {
+      const { deposit, balance } = splitPayment(r.total);
+      revenue += deposit;
+      toCollect += balance;
+      booksSold += r.qty;
+    }
+    if (r.status === 'delivered') {
       revenue += r.total;
       booksSold += r.qty;
     }

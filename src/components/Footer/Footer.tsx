@@ -12,6 +12,14 @@ export function Footer({ share = true }: { share?: boolean } = {}) {
         © {site.year} {site.author}
       </span>
       {site.email && <a href={`mailto:${site.email}`}>{site.email}</a>}
+      <span className={styles.social}>
+        <a href={site.facebook.page} target="_blank" rel="noopener">
+          Facebook хуудас
+        </a>
+        <a href={site.facebook.messenger} target="_blank" rel="noopener">
+          Messenger-ээр асуух
+        </a>
+      </span>
       {share && <Share tone="light" />}
     </footer>
   );

@@ -2,6 +2,7 @@ import { saveNote, setStatus } from '@/app/admin/actions';
 import type { Order } from '@/db/schema';
 import { ORDER_STATUSES, PAY_LABELS, STATUS_LABELS } from '@/lib/labels';
 import { formatMNT } from '@/lib/money';
+import { splitPayment } from '@/lib/pricing';
 import { CopyButton, Submit } from './ClientBits';
 import styles from './Admin.module.css';
 
@@ -61,6 +62,14 @@ export function OrderCard({ order }: { order: Order }) {
           <dt>Нийт</dt>
           <dd>{order.total > 0 ? formatMNT(order.total) : '—'}</dd>
         </div>
+        {order.total > 0 && (
+          <div>
+            <dt>Урьдчилгаа / Хүргэлтээр</dt>
+            <dd>
+              {formatMNT(splitPayment(order.total).deposit)} / {formatMNT(splitPayment(order.total).balance)}
+            </dd>
+          </div>
+        )}
       </dl>
 
       <form action={setStatus} className={styles.statuses} aria-label={`№${order.id} захиалгын төлөв`}>
