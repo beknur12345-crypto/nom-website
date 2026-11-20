@@ -112,6 +112,48 @@
   font-variant-numeric: tabular-nums;
   user-select: all;
 }
+.copyValue {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px 10px;
+}
+.copyText {
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  user-select: all;
+}
+.copyBtn {
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  /* Big enough to tap comfortably on a phone. */
+  min-height: 36px;
+  padding: 6px 14px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.copyBtn:hover {
+  background: var(--red);
+  border-color: var(--red);
+}
+.doneAccount {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  font-weight: 700;
+}
+.doneAccount .copyValue {
+  justify-content: flex-start;
+}
 .note {
   padding-top: 12px;
   font-size: 13px;

@@ -11,6 +11,7 @@ import { Field } from '@/components/form/Field';
 import { Honeypot } from '@/components/form/Honeypot';
 import { Share } from '@/components/Share/Share';
 import { useForm } from '@/components/form/useForm';
+import { CopyValue } from './CopyValue';
 import styles from './OrderForm.module.css';
 
 /** `stock`: books left, or null when stock isn't tracked. */
@@ -61,9 +62,15 @@ export function OrderForm({ stock }: { stock: number | null }) {
         {live && (
           <p>
             Захиалгаа баталгаажуулахын тулд{' '}
-            {priced ? `${formatMNT(totals.deposit)} (${pct}%)` : `нийт дүнгийн ${pct}%`} урьдчилгааг{' '}
-            {bank.bank}, {bank.account} ({bank.holder}) дансанд шилжүүлж, гүйлгээний утгад утасны дугаараа
-            бичнэ үү. Үлдэгдлийг номоо хүлээн авахдаа төлнө.
+            {priced ? `${formatMNT(totals.deposit)} (${pct}%)` : `нийт дүнгийн ${pct}%`} урьдчилгааг доорх
+            дансанд шилжүүлж, гүйлгээний утгад утасны дугаараа бичнэ үү. Үлдэгдлийг номоо хүлээн авахдаа
+            төлнө.
+          </p>
+        )}
+        {live && (
+          <p className={styles.doneAccount}>
+            {bank.bank} · {bank.holder}
+            <CopyValue value={bank.account} label="Дансны дугаар" />
           </p>
         )}
         <button className="btn" type="button" onClick={startOver}>
@@ -178,7 +185,9 @@ export function OrderForm({ stock }: { stock: number | null }) {
             </div>
             <div>
               <dt>Данс</dt>
-              <dd>{bank.account}</dd>
+              <dd>
+                <CopyValue value={bank.account} label="Дансны дугаар" />
+              </dd>
             </div>
             <div>
               <dt>Хүлээн авагч</dt>
