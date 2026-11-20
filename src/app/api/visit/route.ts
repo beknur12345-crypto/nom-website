@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto';
 import { lt, sql } from 'drizzle-orm';
 import { getDb } from '@/db';
 import { visits } from '@/db/schema';
+import { isSignedIn } from '@/lib/admin-auth';
 import { env } from '@/lib/env';
 import { cleanPath, deviceOf, isBot, sourceOf, ubDay } from '@/lib/visit-classify';
 
@@ -17,6 +18,8 @@ export async function POST(request: Request): Promise<Response> {
 
   const ua = request.headers.get('user-agent') ?? '';
   if (isBot(ua)) return done;
+  // The owner browsing their own site (logged into the admin on this device) is not a visitor.
+  if (await isSignedIn()) return done;
 
   let body: { path?: unknown; referrer?: unknown; query?: unknown; internal?: unknown };
   try {

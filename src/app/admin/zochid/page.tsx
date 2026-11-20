@@ -160,10 +160,6 @@ export default async function VisitsAdmin() {
                 unit="хүн"
               />
             </div>
-
-            <p className={styles.visitNote}>
-              Зочдын нэр, утас, IP хаяг хадгалагдахгүй. Таны өөрийн самбарт орсныг болон роботуудыг тоолохгүй.
-            </p>
           </>
         )}
       </main>

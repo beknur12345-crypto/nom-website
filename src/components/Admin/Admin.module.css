@@ -536,11 +536,6 @@
   min-width: 0;
   overflow-wrap: anywhere;
 }
-.visitNote {
-  font-size: 13px;
-  opacity: 0.75;
-  max-width: 640px;
-}
 
 /* Section switcher inside the top bar */
 .bar {

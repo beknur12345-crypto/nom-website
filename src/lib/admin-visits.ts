@@ -58,6 +58,14 @@ export async function getVisitStats(): Promise<VisitStats | null> {
   const inMonth = and(recent, sql`${day} > ${today} - ${sql.raw(String(DAYS))}`);
   const arrivals = and(inMonth, ne(visits.source, 'internal'));
   const visitorDays = sql<number>`count(distinct (${day}::text || ${visits.visitor}))::int`;
+  // Each person's first arrival of the day, so every person counts under one source only
+  // and the sources list adds up to the visitor total.
+  const firstArrival = db
+    .selectDistinctOn([day, visits.visitor], { source: visits.source })
+    .from(visits)
+    .where(arrivals)
+    .orderBy(day, visits.visitor, visits.at)
+    .as('first_arrival');
 
   const [summary, daily, sources, pages, countries, devices, monthOrders] = await Promise.all([
     db
@@ -77,10 +85,9 @@ export async function getVisitStats(): Promise<VisitStats | null> {
       .where(inMonth)
       .groupBy(day),
     db
-      .select({ key: visits.source, value: visitorDays })
-      .from(visits)
-      .where(arrivals)
-      .groupBy(visits.source)
+      .select({ key: firstArrival.source, value: sql<number>`count(*)::int` })
+      .from(firstArrival)
+      .groupBy(firstArrival.source)
       .orderBy(sql`2 desc`)
       .limit(8),
     db
